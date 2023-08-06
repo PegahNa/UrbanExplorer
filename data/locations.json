@@ -1,0 +1,75 @@
+{
+  "spain": [
+    {
+      "activity": "Plaza Mayor",
+      "price": 0,
+      "rating": 4.6,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : false,
+      "visual_accessibility" : false,
+      "opening_hours" : "24hs",
+      "current_opening_hours" : "open_now"
+
+    },
+    {
+      "activity": "El Retiro Park",
+      "price": 0,
+      "rating": 4.8,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : false,
+      "visual_accessibility" : false,
+      "opening_hours" : "24hs",
+      "current_opening_hours" : "open_now"
+    },
+    {
+      "activity": "Museo nacional del Prado",
+      "price": 15,
+      "rating": 4.7,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : true,
+      "visual_accessibility" : true,
+      "opening_hours" : "mon-sat 10:00-20:00, sun 10:00-19:00",
+      "current_opening_hours" : "open_now"
+    },
+    {
+      "activity": "Royal Palace of Madrid",
+      "price": 12,
+      "rating": 4.6,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : true,
+      "visual_accessibility" : true,
+      "opening_hours" : "mon-sat 10:00-19:00, sun 10:00-16:00",
+      "current_opening_hours" : "open_now"
+    },
+    {
+      "activity": "Santiago Bernabeu Stadium",
+      "price": 15,
+      "rating": 4.6,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : false,
+      "visual_accessibility" : false,
+      "opening_hours" : "mon-sat 9:30-19:00, sun 10:00-18:30",
+      "current_opening_hours" : "open_now"
+    },
+    {
+      "activity": "Mercado de San Miguel",
+      "price": 0,
+      "rating": 4.4,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : false,
+      "visual_accessibility" : false,
+      "opening_hours" : "sun-thu 10:00-00:00, fri-sat 10:00-01:00",
+      "current_opening_hours" : "open_now"
+    },
+    {
+      "activity": "Puerta de Alcala",
+      "price": 0,
+      "rating": 4.7,
+      "wheelchair_accessible_entrance" : true,
+      "hearing_accessibility" : false,
+      "visual_accessibility" : false,
+      "opening_hours" : "24hs",
+      "current_opening_hours" : "open_now"
+    }
+  ]
+}
