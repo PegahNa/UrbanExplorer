@@ -50,3 +50,5 @@ class AdminUser(User):
     # need to return to this once we have created the admin section to see if more is needed
     pass
 
+#THIS IS A TEST FOR GITHUB
+#SECOND TEST
