@@ -142,5 +142,77 @@
       "opening_hours": "wed-mon 11:00-21:00",
       "current_opening_hours": "open_now"
     }
+  ],
+  "new york": [
+    {
+      "activity": "Central Park",
+      "price": 0,
+      "rating": 4.8,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": false,
+      "visual_accessibility": false,
+      "opening_hours": "24hs",
+      "current_opening_hours": "open_now"
+    },
+    {
+      "activity": "Times Square",
+      "price": 0,
+      "rating": 4.7,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": false,
+      "visual_accessibility": false,
+      "opening_hours": "24hs",
+      "current_opening_hours": "open_now"
+    },
+    {
+      "activity": "The Metropolitan Museum of Art",
+      "price": 25,
+      "rating": 4.9,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": "sun-thu 10:00-17:30, fri-sat 10:00-21:00",
+      "current_opening_hours": "open_now"
+    },
+    {
+      "activity": "Statue of Liberty",
+      "price": 20,
+      "rating": 4.6,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": "8:30-16:30",
+      "current_opening_hours": "open_now"
+    },
+    {
+      "activity": "Empire State Building",
+      "price": 38,
+      "rating": 4.5,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": "10:00-01:00",
+      "current_opening_hours": "open_now"
+    },
+    {
+      "activity": "Brooklyn Bridge",
+      "price": 0,
+      "rating": 4.7,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": "24hs",
+      "current_opening_hours": "open_now"
+    },
+    {
+      "activity": "Central Park Zoo",
+      "price": 14,
+      "rating": 4.4,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": "10:00-17:00",
+      "current_opening_hours": "open_now"
+    }
   ]
 }
