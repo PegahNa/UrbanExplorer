@@ -1,0 +1,17 @@
+{
+    "livvy.w23": {
+        "username": "livvy.w23",
+        "password": "cheese",
+        "is_new": true
+    },
+    "test.w23": {
+        "username": "test.w23",
+        "password": "tomato",
+        "is_new": true
+    },
+    "test.w234": {
+        "username": "test.w234",
+        "password": "lettuce",
+        "is_new": true
+    }
+}
