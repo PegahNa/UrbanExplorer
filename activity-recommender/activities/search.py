@@ -24,24 +24,31 @@ class Filter:
         return pretty_result
 
     def filter_by_rating(self, target_rating):
-        result = [item for item in self.city if item["rating"] in target_rating]
-        pretty_result = json.dumps(result, indent=4)
-        return pretty_result
+        try:
+            if target_rating[0] not in [0, 1, 2, 3, 4, 5.0]:
+                raise ValueError("The rating requested is not in the range of 1-5 stars", target_rating)
+            else:
+                result = [item for item in self.city if item["rating"] in target_rating]
+                pretty_result = json.dumps(result, indent=4)
+                return pretty_result
+        except ValueError as err:
+            print(err.args)
+
 
     def filter_by_wheelchair_accessible_entrance(self):
-        result = [item for item in self.city if item["wheelchair_accessible_entrance"] == True]
+        result = [item for item in self.city if item["wheelchair_accessible_entrance"] is True]
         pretty_result = json.dumps(result, indent=4)
         print("wheelchair_accessible_entrance")
         return pretty_result
 
     def filter_by_hearing_accessibility(self):
-        result = [item for item in self.city if item["hearing_accessibility"] == True]
+        result = [item for item in self.city if item["hearing_accessibility"] is True]
         pretty_result = json.dumps(result, indent=4)
         print("hearing_accessibility")
         return pretty_result
 
     def filter_by_visual_accessibility(self):
-        result = [item for item in self.city if item["visual_accessibility"] == True]
+        result = [item for item in self.city if item["visual_accessibility"] is True]
         pretty_result = json.dumps(result, indent=4)
         print("visual_accessibility")
         return pretty_result

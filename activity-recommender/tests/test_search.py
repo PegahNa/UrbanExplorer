@@ -153,16 +153,6 @@ class TestFilter(unittest.TestCase):
 
 
     # VALID CASES
-    def test_filter_by_price_cheap(self):
-        city_filter = Filter(self.spain_data)
-        target_price = range(1, 10)
-
-        result = city_filter.filter_by_price(target_price)
-        expected_result = []
-
-        # Check whether the result is right
-        self.assertEqual(result, json.dumps(expected_result, indent=4))
-
     def test_filter_by_price_medium(self):
         city_filter = Filter(self.spain_data)
         target_price = range(10,20)
@@ -200,15 +190,6 @@ class TestFilter(unittest.TestCase):
         "current_opening_hours": "open_now"
     }
 ]
-        # Check whether the result is right
-        self.assertEqual(result, json.dumps(expected_result, indent=4))
-
-    def test_filter_by_price_expensive(self):
-        city_filter = Filter(self.spain_data)
-        target_price = range(20, 100)
-
-        result = city_filter.filter_by_price(target_price)
-        expected_result = []
         # Check whether the result is right
         self.assertEqual(result, json.dumps(expected_result, indent=4))
 
@@ -257,16 +238,6 @@ class TestFilter(unittest.TestCase):
         "opening_hours": "24hs",
         "current_opening_hours": "open_now"
     }]
-        # Check whether the result is right
-        self.assertEqual(result, json.dumps(expected_result, indent=4))
-
-    def test_filter_by_rating_1_star(self):
-        city_filter = Filter(self.paris_data)
-        target_rating = [1.0 + (x * 0.1)
-             for x in range(0, 10)]
-
-        result = city_filter.filter_by_price(target_rating)
-        expected_result = []
         # Check whether the result is right
         self.assertEqual(result, json.dumps(expected_result, indent=4))
 
@@ -350,6 +321,44 @@ class TestFilter(unittest.TestCase):
 
         # Check whether the result is right
         self.assertEqual(result, json.dumps(expected_result, indent=4))
+
+    # EDGE CASES
+    def test_filter_by_price_cheap(self):
+        city_filter = Filter(self.spain_data)
+        target_price = range(1, 10)
+
+        result = city_filter.filter_by_price(target_price)
+        expected_result = []
+
+        # Check whether the result is right
+        self.assertEqual(result, json.dumps(expected_result, indent=4))
+
+    def test_filter_by_price_expensive(self):
+        city_filter = Filter(self.spain_data)
+        target_price = range(20, 100)
+
+        result = city_filter.filter_by_price(target_price)
+        expected_result = []
+        # Check whether the result is right
+        self.assertEqual(result, json.dumps(expected_result, indent=4))
+
+    def test_filter_by_rating_1_stars(self):
+        city_filter = Filter(self.paris_data)
+        target_rating = [1.0 + (x * 0.1)
+             for x in range(0, 10)]
+
+        result = city_filter.filter_by_price(target_rating)
+        expected_result = []
+        # Check whether the result is right
+        self.assertEqual(result, json.dumps(expected_result, indent=4))
+
+    # INVALID CASES
+    def test_filter_by_rating_6_stars(self):
+        city_filter = Filter(self.paris_data)
+        self.assertRaises(ValueError, city_filter.filter_by_rating, [5.5, 6])
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
