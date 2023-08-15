@@ -59,7 +59,7 @@ class UserManager:
         if user.username in cls.users:
             raise ExistingUserError("Username already exists.")
         cls.users[user.username] = user
-        cls.save_users()
+        cls.save_users()  #TODO would it be better to do this add_user without calling save_user
         return True
 
     # get users stored in the dict that have been retrieved from the file
