@@ -1,13 +1,14 @@
 import json
 import unittest
-from ..activities.search import Filter
+from ..activities.search import Filter, RatingHigherThan5Stars
+
 
 
 class TestFilter(unittest.TestCase):
     # It'll run its code before every single test
     def setUp(self):
         # It'll mock the data from all the cities in the JSON file
-        self.spain_data = [
+        self.madrid_data = [
             {
                 "activity": "Plaza Mayor",
                 "price": 0,
@@ -154,7 +155,7 @@ class TestFilter(unittest.TestCase):
 
     # VALID CASES
     def test_filter_by_price_medium(self):
-        city_filter = Filter(self.spain_data)
+        city_filter = Filter(self.madrid_data)
         target_price = range(10,20)
 
         result = city_filter.filter_by_price(target_price)
@@ -194,7 +195,7 @@ class TestFilter(unittest.TestCase):
         self.assertEqual(result, json.dumps(expected_result, indent=4))
 
     def test_filter_by_price_free(self):
-        city_filter = Filter(self.spain_data)
+        city_filter = Filter(self.madrid_data)
         target_price = [0]
 
         result = city_filter.filter_by_price(target_price)
@@ -324,7 +325,7 @@ class TestFilter(unittest.TestCase):
 
     # EDGE CASES
     def test_filter_by_price_cheap(self):
-        city_filter = Filter(self.spain_data)
+        city_filter = Filter(self.madrid_data)
         target_price = range(1, 10)
 
         result = city_filter.filter_by_price(target_price)
@@ -334,7 +335,7 @@ class TestFilter(unittest.TestCase):
         self.assertEqual(result, json.dumps(expected_result, indent=4))
 
     def test_filter_by_price_expensive(self):
-        city_filter = Filter(self.spain_data)
+        city_filter = Filter(self.madrid_data)
         target_price = range(20, 100)
 
         result = city_filter.filter_by_price(target_price)
@@ -353,10 +354,11 @@ class TestFilter(unittest.TestCase):
         self.assertEqual(result, json.dumps(expected_result, indent=4))
 
     # INVALID CASES
+    # Not functioning properly. It doesn't recognise the error raised
     def test_filter_by_rating_6_stars(self):
         city_filter = Filter(self.paris_data)
-        self.assertRaises(ValueError, city_filter.filter_by_rating, [5.5, 6])
-
+        with self.assertRaises(RatingHigherThan5Stars):
+            city_filter.filter_by_rating([6.0])
 
 
 
