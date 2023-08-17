@@ -2,9 +2,13 @@ import unittest
 import os
 import json
 from unittest import TestCase, mock
-# from group-1-activity_recommender.auth.login
+from activity_recommender.auth.login import UserManager, User, ExistingUserError, UserValidationError
+
 
 class TestAuthentication(TestCase):  # TODO can i combine the two and call it testauth insteaf of one for manager and user
+
+    original_users_data = None
+    dummy_data = None
 
     @classmethod
     def setUpClass(cls):

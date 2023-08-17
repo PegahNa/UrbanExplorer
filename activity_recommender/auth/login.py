@@ -1,7 +1,6 @@
 import json
 import os
 
-
 # initialise custom errors
 class UserManagerError(Exception):
     pass
@@ -18,7 +17,7 @@ class ExistingUserError(UserManagerError):
 # initialise class for user management
 class UserManager:
     users = {}  # dict to store the list of users, key for username, user object for value
-    user_file = "./data/users.json"
+    user_file = r"C:\Coding\Group-1-activity-recommender\data\users.json"
 
     # method to take users from file and store them in users dict
     @classmethod
@@ -98,16 +97,16 @@ class AdminUser(User):
 # # testing if this work
 
 # retrieve users needs to be run to gather all the data into the users dict in UserManager
-UserManager.retrieve_users()
-
-# Testing if the login functionality works
-username_1 = input("Please enter your username: ")  # use livvy.w23
-password_1 = input("Please enter a password: ")  # user cheese
-
-user_1 = User(username_1, password_1)
-
-print(user_1.login())  # this should output login successful, however I keep getting login failed
+# UserManager.retrieve_users()
+#
+# # Testing if the login functionality works
+# username_1 = input("Please enter your username: ")  # use livvy.w23
+# password_1 = input("Please enter a password: ")  # user cheese
+#
+# user_1 = User(username_1, password_1)
+#
 # print(os.getcwd())
+# print(user_1.login())  # this should output login successful, however I keep getting login failed
 #
 # response = UserManager.add_user(user_1)
 #
