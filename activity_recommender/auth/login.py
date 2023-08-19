@@ -1,6 +1,7 @@
 import json
 import os
 
+
 # initialise custom errors
 class UserManagerError(Exception):
     pass
@@ -17,7 +18,7 @@ class ExistingUserError(UserManagerError):
 # initialise class for user management
 class UserManager:
     users = {}  # dict to store the list of users, key for username, user object for value
-    user_file = r"C:\Coding\Group-1-activity-recommender\data\users.json"
+    user_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "users.json")
 
     # method to take users from file and store them in users dict
     @classmethod
@@ -35,9 +36,9 @@ class UserManager:
         for username, user_data in data.items():
             user = User(user_data["username"], user_data["password"])
             cls.users[username] = user
-        return True  # TODO use this to say that the users have been retrieved and are in users
+        return True
 
-    # method to save user in the user dict to file TODO double check w is ok since all users will be in user sdict
+    # method to save user in the user dict to file
     @classmethod
     def save_users(cls):
         try:
@@ -58,7 +59,7 @@ class UserManager:
         if user.username in cls.users:
             raise ExistingUserError("Username already exists.")
         cls.users[user.username] = user
-        cls.save_users()  #TODO would it be better to do this add_user without calling save_user
+        cls.save_users()  # TODO would it be better to do this add_user without calling save_user
         return True
 
     # get users stored in the dict that have been retrieved from the file
@@ -77,7 +78,7 @@ class User:
         if existing_user and existing_user.password == self.password:
             return True  # added this as boolean values, so it's easier for you to use in main.py @Pegah
         else:
-            return False  # TODO think about having a while loop at the stage of asking for the password in main.py
+            return False
 
     def change_password(self, new_password):
         self.password = new_password
@@ -92,23 +93,3 @@ class AdminUser(User):
     # will inherit all things from user class
     # need to return to this once we have created the admin section to see if more is needed
     pass
-
-
-# # testing if this work
-
-# retrieve users needs to be run to gather all the data into the users dict in UserManager
-# UserManager.retrieve_users()
-#
-# # Testing if the login functionality works
-# username_1 = input("Please enter your username: ")  # use livvy.w23
-# password_1 = input("Please enter a password: ")  # user cheese
-#
-# user_1 = User(username_1, password_1)
-#
-# print(os.getcwd())
-# print(user_1.login())  # this should output login successful, however I keep getting login failed
-#
-# response = UserManager.add_user(user_1)
-#
-# if response:
-#     print("New user successfully registered")
