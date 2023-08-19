@@ -2,6 +2,19 @@ import json
 import os
 
 
+# initialise custom errors
+class UserManagerError(Exception):
+    pass
+
+
+class UserValidationError(UserManagerError):
+    pass
+
+
+class ExistingUserError(UserManagerError):
+    pass
+
+
 # initialise class for user management
 class UserManager:
     users = {}  # dict to store the list of users, key for username, user object for value
@@ -12,35 +25,42 @@ class UserManager:
     def retrieve_users(cls):
         # check if the file exists and return string if not
         if not os.path.exists(cls.user_file):
-            return f"File {cls.user_file} does not exist"
+            raise FileNotFoundError(f"File {cls.user_file} does not exist. Exiting program")
 
-        with open(cls.user_file, "r") as file:
-            data = json.load(file)
-            for username, user_data in data.items():
-                user = User(user_data["username"], user_data["password"])
-                cls.users[username] = user
+        try:
+            with open(cls.user_file, "r") as file:
+                data = json.load(file)
+        except json.JSONDecodeError:
+            raise UserManagerError(f"Error decoding")
+
+        for username, user_data in data.items():
+            user = User(user_data["username"], user_data["password"])
+            cls.users[username] = user
         return True  # TODO use this to say that the users have been retrieved and are in users
 
     # method to save user in the user dict to file TODO double check w is ok since all users will be in user sdict
     @classmethod
     def save_users(cls):
-        with open(cls.user_file, "w") as file:
-            users_to_store = {username: {"username": user.username, "password": user.password}
-                              for username, user in cls.users.items()}
-            json.dump(users_to_store, file)
+        try:
+            with open(cls.user_file, "w") as file:
+                users_to_store = {username: {"username": user.username, "password": user.password}
+                                  for username, user in cls.users.items()}
+                json.dump(users_to_store, file)
+        except IOError:
+            raise UserManagerError(f"Error writing to {cls.user_file} user cannot be saved and will not be able to log"
+                                   f"in next time.")
 
     # add new user to user dict
 
     @classmethod
     def add_user(cls, user):
+        if not user.username or not user.password:
+            raise UserValidationError("Username and password should not be empty.")
         if user.username in cls.users:
-            # "Username already exists"  # TODO make sure to add in running of programme, if false user exists
-            return False
-        else:
-            cls.users[user.username] = user
-            "User registered successfully!"
-            cls.save_users()
-            return True  # TODO make sure to add in running of programme, if true user registered
+            raise ExistingUserError("Username already exists.")
+        cls.users[user.username] = user
+        cls.save_users()
+        return True
 
     # get users stored in the dict that have been retrieved from the file
     @classmethod
@@ -52,15 +72,13 @@ class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.is_new = True  # TODO do I need this, could be potentially useful for scalability but right now useless?
 
     def login(self):
         existing_user = UserManager.get_user(self.username)
         if existing_user and existing_user.password == self.password:
-            "Login successful"
-            return "login successful"
+            return True  # added this as boolean values, so it's easier for you to use in main.py @Pegah
         else:
-            return "login failed"  # TODO think about having a while loop at the stage of asking for the password in main.py
+            return False  # TODO think about having a while loop at the stage of asking for the password in main.py
 
     def change_password(self, new_password):
         self.password = new_password
