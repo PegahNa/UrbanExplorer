@@ -1,11 +1,11 @@
 import unittest
 import os
 import json
-from unittest import TestCase, mock
+from unittest import TestCase
 from activity_recommender.auth.login import UserManager, User, ExistingUserError, UserValidationError
 
 
-class TestAuthentication(TestCase):  # TODO can i combine the two and call it testauth insteaf of one for manager and user
+class TestAuthentication(TestCase):  # TODO check if I can do one class for both so it's one setup for both
 
     original_users_data = None
     dummy_data = None
@@ -37,7 +37,7 @@ class TestAuthentication(TestCase):  # TODO can i combine the two and call it te
 
         # write dummy data into my JSON file
         with open(UserManager.user_file, "w") as file:
-            json.dump(cls.dummy_data, file)  # TODO work out why this is happening
+            json.dump(cls.dummy_data, file)
 
     def setUp(self):
         # Retrieve users before each test
