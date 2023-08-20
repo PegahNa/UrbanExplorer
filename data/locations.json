@@ -1,14 +1,15 @@
 {
-  "spain": [
+  "madrid": [
     {
       "activity": "Plaza Mayor",
       "price": 0,
       "rating": 4.6,
-      "wheelchair_accessible_entrance": true,
+      "wheelchair_accessible_entrance": false,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "24hs",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
     },
     {
       "activity": "El Retiro Park",
@@ -17,8 +18,9 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "24hs",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
     },
     {
       "activity": "Museo nacional del Prado",
@@ -27,8 +29,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "mon-sat 10:00-20:00, sun 10:00-19:00",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "10:00", "close": "20:00"},
+        {"day": "Tuesday", "open": "10:00", "close": "20:00"},
+        {"day": "Wednesday", "open": "10:00", "close": "20:00"},
+        {"day": "Thursday", "open": "10:00", "close": "20:00"},
+        {"day": "Friday", "open": "10:00", "close": "20:00"},
+        {"day": "Saturday", "open": "10:00", "close": "20:00"},
+        {"day": "Sunday", "open": "10:00", "close": "19:00"}
+      ]}
     },
     {
       "activity": "Royal Palace of Madrid",
@@ -37,8 +48,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "mon-sat 10:00-19:00, sun 10:00-16:00",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "10:00", "close": "19:00"},
+        {"day": "Tuesday", "open": "10:00", "close": "19:00"},
+        {"day": "Wednesday", "open": "10:00", "close": "19:00"},
+        {"day": "Thursday", "open": "10:00", "close": "19:00"},
+        {"day": "Friday", "open": "10:00", "close": "19:00"},
+        {"day": "Saturday", "open": "10:00", "close": "19:00"},
+        {"day": "Sunday", "open": "10:00", "close": "16:00"}
+      ]}
     },
     {
       "activity": "Santiago Bernabeu Stadium",
@@ -47,8 +67,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "mon-sat 9:30-19:00, sun 10:00-18:30",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "09:30", "close": "19:00"},
+        {"day": "Tuesday", "open": "09:30", "close": "19:00"},
+        {"day": "Wednesday", "open": "09:30", "close": "19:00"},
+        {"day": "Thursday", "open": "09:30", "close": "19:00"},
+        {"day": "Friday", "open": "09:30", "close": "19:00"},
+        {"day": "Saturday", "open": "09:30", "close": "19:00"},
+        {"day": "Sunday", "open": "10:00", "close": "18:30"}
+      ]}
     },
     {
       "activity": "Mercado de San Miguel",
@@ -57,8 +86,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "sun-thu 10:00-00:00, fri-sat 10:00-01:00",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "10:00", "close": "23:00"},
+        {"day": "Tuesday", "open": "10:00", "close": "23:00"},
+        {"day": "Wednesday", "open": "10:00", "close": "23:00"},
+        {"day": "Thursday", "open": "10:00", "close": "23:00"},
+        {"day": "Friday", "open": "10:00", "close": "23:59:59.9999999"},
+        {"day": "Saturday", "open": "10:00", "close": "23:59:59.9999999"},
+        {"day": "Sunday", "open": "10:00", "close": "23:00"}
+      ]}
     },
     {
       "activity": "Puerta de Alcala",
@@ -67,8 +105,9 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "24hs",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
     }
   ],
   "paris": [
@@ -79,8 +118,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "daily 9:00-00:45",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "09:00", "close": "23:00"},
+        {"day": "Tuesday", "open": "09:00", "close": "23:00"},
+        {"day": "Wednesday", "open": "09:00", "close": "23:00"},
+        {"day": "Thursday", "open": "09:00", "close": "23:00"},
+        {"day": "Friday", "open": "09:00", "close": "23:00"},
+        {"day": "Saturday", "open": "09:00", "close": "23:00"},
+        {"day": "Sunday", "open": "09:00", "close": "23:00"}
+      ]}
     },
     {
       "activity": "Louvre Museum",
@@ -89,8 +137,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "mon, thu, sat, sun 9:00-18:00, wed, fri 9:00-21:45",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "09:00", "close": "18:00"},
+        {"day": "Tuesday", "open": "09:00", "close": "21:45"},
+        {"day": "Wednesday", "open": "09:00", "close": "21:45"},
+        {"day": "Thursday", "open": "09:00", "close": "18:00"},
+        {"day": "Friday", "open": "09:00", "close": "21:45"},
+        {"day": "Saturday", "open": "09:00", "close": "18:00"},
+        {"day": "Sunday", "open": "09:00", "close": "18:00"}
+      ]}
     },
     {
       "activity": "Notre-Dame Cathedral",
@@ -99,18 +156,28 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "daily 8:00-18:45",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "08:00", "close": "18:45"},
+        {"day": "Tuesday", "open": "08:00", "close": "18:45"},
+        {"day": "Wednesday", "open": "08:00", "close": "18:45"},
+        {"day": "Thursday", "open": "08:00", "close": "18:45"},
+        {"day": "Friday", "open": "08:00", "close": "18:45"},
+        {"day": "Saturday", "open": "08:00", "close": "18:45"},
+        {"day": "Sunday", "open": "08:00", "close": "18:45"}
+      ]}
     },
     {
-      "activity": "Montmartre",
+      "activity": "Mondaytmartre",
       "price": 0,
       "rating": 4.5,
       "wheelchair_accessible_entrance": false,
       "hearing_accessibility": false,
       "visual_accessibility": false,
-      "opening_hours": "24hs",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
     },
     {
       "activity": "Seine River Cruise",
@@ -119,8 +186,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "daily 9:00-23:00",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "09:00", "close": "23:00"},
+        {"day": "Tuesday", "open": "09:00", "close": "23:00"},
+        {"day": "Wednesday", "open": "09:00", "close": "23:00"},
+        {"day": "Thursday", "open": "09:00", "close": "23:00"},
+        {"day": "Friday", "open": "09:00", "close": "23:00"},
+        {"day": "Saturday", "open": "09:00", "close": "23:00"},
+        {"day": "Sunday", "open": "09:00", "close": "23:00"}
+      ]}
     },
     {
       "activity": "Versailles Palace",
@@ -129,8 +205,17 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "tue-sun 9:00-18:30",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "09:00", "close": "18:30"},
+        {"day": "Tuesday", "open": "09:00", "close": "18:30"},
+        {"day": "Wednesday", "open": "09:00", "close": "18:30"},
+        {"day": "Thursday", "open": "09:00", "close": "18:30"},
+        {"day": "Friday", "open": "09:00", "close": "18:30"},
+        {"day": "Saturday", "open": "09:00", "close": "18:30"},
+        {"day": "Sunday", "open": "09:00", "close": "18:30"}
+      ]}
     },
     {
       "activity": "Centre Pompidou",
@@ -139,8 +224,128 @@
       "wheelchair_accessible_entrance": true,
       "hearing_accessibility": true,
       "visual_accessibility": true,
-      "opening_hours": "wed-mon 11:00-21:00",
-      "current_opening_hours": "open_now"
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "11:00", "close": "21:00"},
+        {"day": "Tuesday", "open": "11:00", "close": "21:00"},
+        {"day": "Wednesday", "open": "11:00", "close": "21:00"},
+        {"day": "Thursday", "open": "11:00", "close": "21:00"},
+        {"day": "Friday", "open": "11:00", "close": "21:00"},
+        {"day": "Saturday", "open": "11:00", "close": "21:00"},
+        {"day": "Sunday", "open": "11:00", "close": "21:00"}
+      ]}
+    }
+  ],
+  "new york": [
+    {
+      "activity": "Central Park",
+      "price": 0,
+      "rating": 4.8,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": false,
+      "visual_accessibility": false,
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
+    },
+    {
+      "activity": "Times Square",
+      "price": 0,
+      "rating": 4.7,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": false,
+      "visual_accessibility": false,
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
+    },
+    {
+      "activity": "The Metropolitan Museum of Art",
+      "price": 25,
+      "rating": 4.9,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : [
+        {"day": "Monday", "open": "10:00", "close": "17:30"},
+        {"day": "Tuesday", "open": "10:00", "close": "17:30"},
+        {"day": "Wednesday", "open": "10:00", "close": "17:30"},
+        {"day": "Thursday", "open": "10:00", "close": "17:30"},
+        {"day": "Friday", "open": "10:00", "close": "21:00"},
+        {"day": "Saturday", "open": "10:00", "close": "21:00"},
+        {"day": "Sunday", "open": "10:00", "close": "17:30"}
+     ]}
+    },
+    {
+      "activity": "Statue of Liberty",
+      "price": 20,
+      "rating": 4.6,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "08:30", "close": "16:30"},
+        {"day": "Tuesday", "open": "08:30", "close": "16:30"},
+        {"day": "Wednesday", "open": "08:30", "close": "16:30"},
+        {"day": "Thursday", "open": "08:30", "close": "16:30"},
+        {"day": "Friday", "open": "08:30", "close": "16:30"},
+        {"day": "Saturday", "open": "08:30", "close": "16:30"},
+        {"day": "Sunday", "open": "08:30", "close": "16:30"}
+      ]}
+    },
+    {
+      "activity": "Empire State Building",
+      "price": 38,
+      "rating": 4.5,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "10:00", "close": "23:00"},
+        {"day": "Tuesday", "open": "10:00", "close": "23:00"},
+        {"day": "Wednesday", "open": "10:00", "close": "23:00"},
+        {"day": "Thursday", "open": "10:00", "close": "23:00"},
+        {"day": "Friday", "open": "10:00", "close": "23:00"},
+        {"day": "Saturday", "open": "10:00", "close": "23:00"},
+        {"day": "Sunday", "open": "10:00", "close": "23:00"}
+      ]}
+    },
+    {
+      "activity": "Brooklyn Bridge",
+      "price": 0,
+      "rating": 4.7,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": {
+        "everyday" : "24hs",
+        "specific_times" : []}
+    },
+    {
+      "activity": "Central Park Zoo",
+      "price": 14,
+      "rating": 4.4,
+      "wheelchair_accessible_entrance": true,
+      "hearing_accessibility": true,
+      "visual_accessibility": true,
+      "opening_hours": {
+        "everyday" : "",
+        "specific_times" : [
+        {"day": "Monday", "open": "10:00", "close": "17:00"},
+        {"day": "Tuesday", "open": "10:00", "close": "17:00"},
+        {"day": "Wednesday", "open": "10:00", "close": "17:00"},
+        {"day": "Thursday", "open": "10:00", "close": "17:00"},
+        {"day": "Friday", "open": "10:00", "close": "17:00"},
+        {"day": "Saturday", "open": "10:00", "close": "17:00"},
+        {"day": "Sunday", "open": "10:00", "close": "17:00"}
+      ]}
     }
   ],
   "new york": [
