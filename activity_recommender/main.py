@@ -3,6 +3,8 @@ import json
 from activities.search import Filter
 # import login
 
+#  We need to do error handling for every function and a back function for each menu
+
 
 class ActivityRecommender:
     def __init__(self):
@@ -86,7 +88,7 @@ class ActivityRecommender:
         print("5. Go back to the main menu")
 
         search_choice = input("Please select a search option: ")
-
+        # I should make this a function in utils
         if search_choice == "1":
             self.search_by_price(filter_obj)
         elif search_choice == "2":
@@ -105,26 +107,13 @@ class ActivityRecommender:
     def search_by_price(self, filter_obj):
         target_price = input("Enter the target price: cheap, medium, expensive or free: ")
         result = filter_obj.filter_by_price(target_price)
-
-        while True:
-            filter_obj.show_activity(result)
-
-            map_or_list = input("Do you want to see the map for that activity (map) or go back to the list of activities (list)? \n").lower()
-
-            if map_or_list == "map":
-                # function to show map
-                print("map")
-                break
-            elif map_or_list == "list":
-                continue
-            else:
-                print("Invalid input. Please enter 'map' or 'list'.")
+        self.show_activities(result,filter_obj)
 
 
     def search_by_rating(self, filter_obj):
         target_rating = int(input("Enter the target rating (1 to 5): "))
-        result = filter_obj.filter_by_rating([target_rating])
-        print(result)
+        result = filter_obj.filter_by_rating(int(target_rating))
+        self.show_activities(result,filter_obj)
 
     # Fixed issue with indentation
     def search_by_accessibility(self, filter_obj):
@@ -137,13 +126,13 @@ class ActivityRecommender:
 
         if accessibility_choice == "1":
             result = filter_obj.filter_by_wheelchair_accessible_entrance()
-            print(result)
+            self.show_activities(result, filter_obj)
         elif accessibility_choice == "2":
             result = filter_obj.filter_by_hearing_accessibility()
-            print(result)
+            self.show_activities(result, filter_obj)
         elif accessibility_choice == "3":
             result = filter_obj.filter_by_visual_accessibility()
-            print(result)
+            self.show_activities(result, filter_obj)
         elif accessibility_choice == "4":
             self.search_activities_menu()
         else:
@@ -159,17 +148,37 @@ class ActivityRecommender:
 
         if opening_hours_choice == "1":
             result = filter_obj.filter_by_current_opening_hours()
-            print(result)
+            self.show_activities(result, filter_obj)
         elif opening_hours_choice == "2":
             target_date = input("Enter the target date (dd/mm/yyyy): ")
             target_time = input("Enter the target time (hh:mm): ")
-            result = filter_obj.filter_by_opening_hours(target_date, target_time)
-            print(result)
+            result = filter_obj.filter_by_future_opening_hours(target_date, target_time)
+            self.show_activities(result, filter_obj)
         elif opening_hours_choice == "3":
             self.search_activities_menu()
         else:
             print("Invalid choice!")
             self.search_by_opening_hours(filter_obj)
+
+    def show_activities(self, filtered_activities, filter_obj):
+        if not filtered_activities:
+            print("There are not results for that option")
+            self.search_activities_menu()
+        else:
+            while True:
+                filter_obj.show_activity_details(filtered_activities)
+
+                map_or_list = input("Do you want to see the map for that activity (map) or go back to the list of activities (list)? \n").lower()
+
+                if map_or_list == "map":
+                    # function to show map
+                    print("map")
+                    break
+                elif map_or_list == "list":
+                    continue
+                else:
+                    print("Invalid input. Please enter 'map' or 'list'.")
+
 
     # def show_activity(self, data):
     #     selected_activity = input("What activity do you choose? \n")

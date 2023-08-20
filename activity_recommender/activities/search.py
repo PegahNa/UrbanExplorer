@@ -35,7 +35,6 @@ class Filter:
         elif target_price == "free":
             target_price = [0]
         result = [activity for activity in self.city if activity["price"] in target_price]
-        pretty_result = json.dumps(result, indent=4)
         return result
 
     """
@@ -43,53 +42,44 @@ class Filter:
     :param target_rating: It can either be 0, 1, 2, 3, 4 or 5
     :return: JSON representation of activities within that rating (e.g. 4 stars encompasses 4.0, 4.1, 4.2, 4.3, etc)
     """
-    def filter_by_rating(self, target_rating):
+
+    # This should go in utils
+    def ratings(self,target_rating):
         if target_rating == 0:
-            target_rating = [0.0 + (x * 0.1)
-               for x in range(0, 10)]
-        elif target_rating == 1:
-            target_rating = [1.0 + (x * 0.1)
-            for x in range(0, 10)]
-        elif target_rating == 2:
-            target_rating = [2.0 + (x * 0.1)
-             for x in range(0, 10)]
-        elif target_rating == 3:
-            target_rating = [3.0 + (x * 0.1)
-             for x in range(0, 10)]
-        elif target_rating == 4:
-            target_rating = [4.0 + (x * 0.1)
-             for x in range(0, 10)]
-        elif target_rating == 5:
-            target_rating = [5.0]
+            return [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+        if target_rating == 1:
+            return [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9]
+        if target_rating == 2:
+            return [2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9]
+        if target_rating == 3:
+            return [3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9]
+        if target_rating == 4:
+            return [4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9]
+        if target_rating == 5:
+            return [5]
 
-
+    def filter_by_rating(self, desired_rating):
+        target_rating = self.ratings(desired_rating)
         try:
             if target_rating[0] not in [0, 1, 2, 3, 4, 5.0]:
                 raise RatingHigherThan5Stars(target_rating)
             else:
                 result = [activity for activity in self.city if activity["rating"] in target_rating]
-                pretty_result = json.dumps(result, indent=4)
-                return pretty_result
+                return result
         except RatingHigherThan5Stars as err:
             return "The rating requested is not in the range of 1-5 stars", err.value
 
     def filter_by_wheelchair_accessible_entrance(self):
         result = [activity for activity in self.city if activity["wheelchair_accessible_entrance"] is True]
-        pretty_result = json.dumps(result, indent=4)
-        print("wheelchair_accessible_entrance")
-        return pretty_result
+        return result
 
     def filter_by_hearing_accessibility(self):
         result = [activity for activity in self.city if activity["hearing_accessibility"] is True]
-        pretty_result = json.dumps(result, indent=4)
-        print("hearing_accessibility")
-        return pretty_result
+        return result
 
     def filter_by_visual_accessibility(self):
         result = [activity for activity in self.city if activity["visual_accessibility"] is True]
-        pretty_result = json.dumps(result, indent=4)
-        print("visual_accessibility")
-        return pretty_result
+        return result
 
     """
     Filters activities open on a specified future date and time (inputted by user, dates of their holidays).
@@ -105,20 +95,18 @@ class Filter:
         day_target = datetime.datetime.strptime(target_date, date_format).strftime("%A")
         time_target = datetime.datetime.strptime(target_time, date_time).strftime("%H:%M")
 
-        open_activities = []
+        result = []
 
         # For activities open 24hs and activities that much in time and day, append to open_activities
         for activity in self.city:
             if activity["opening_hours"]["everyday"] == "24hs":
-                open_activities.append(activity)
+                result.append(activity)
             elif activity["opening_hours"]["specific_times"] is not None:
                 for opening in activity["opening_hours"]["specific_times"]:
                     if opening["day"] == day_target and opening["open"] <= time_target <= opening["close"]:
-                        open_activities.append(activity)
+                        result.append(activity)
                         break
-
-        pretty_result = json.dumps(open_activities, indent=4)
-        return pretty_result
+        return result
 
     """
     Filters activities that are currently open based on the current day and time.
@@ -128,43 +116,38 @@ class Filter:
         current_day = datetime.datetime.now().strftime("%A")
         current_time = datetime.datetime.now().strftime("%H:%M")
 
-        open_activities = []
+        result = []
 
         for activity in self.city:
             if activity["opening_hours"]["everyday"] == "24hs":
-                open_activities.append(activity)
+                result.append(activity)
             else:
                 specific_times = activity["opening_hours"]["specific_times"]
                 if specific_times is not None:
                     for opening in specific_times:
                         if opening["day"] == current_day and opening["open"] <= current_time <= opening["close"]:
-                            open_activities.append(activity)
+                            result.append(activity)
                             break
-
-        pretty_result = json.dumps(open_activities, indent=4)
-        return pretty_result
+        return result
 
 
-    def show_activity(self, data):
+    def show_activity_details(self, data):
         for index, activity in enumerate(data, start=1):
             print(f"{index}. {activity['activity']}")
+        selected_activity = input("What activity do you choose? Write the number \n")
 
-        selected_activity = input("What activity do you choose? Write the name\n")
-
-        
-        for activity in data:
-            if activity["activity"] == selected_activity:
-                print(f"Name: {activity['activity']}")
-                print(f"Price: £{activity['price']}")
-                print(f"Rating: {activity['rating']} stars")
-                print(f"Wheelchair accessible: {('Yes' if activity['wheelchair_accessible_entrance'] else 'No')}")
-                print(f"Hearing impaired accessible: {('Yes' if activity['hearing_accessibility'] else 'No')}")
-                print(f"Visual impaired accessible: {('Yes' if activity['visual_accessibility'] else 'No')}")
-                if activity["opening_hours"]["everyday"] == "24hs":
-                    print(f"Opening hours: {activity['opening_hours']['everyday']}")
-                elif activity["opening_hours"]["everyday"] == "":
-                    print("Opening hours:")
-                    for time in activity['opening_hours']['specific_times']:
-                        print(f"    {time['day']} from {time['open']} to {time['close']}")
+        activity = data[int(selected_activity)-1]
+        print(f"Name: {activity['activity']}")
+        print(f"Price: £{activity['price']}")
+        print(f"Rating: {activity['rating']} stars")
+        print(f"Wheelchair accessible: {('Yes' if activity['wheelchair_accessible_entrance'] else 'No')}")
+        print(f"Hearing impaired accessible: {('Yes' if activity['hearing_accessibility'] else 'No')}")
+        print(f"Visual impaired accessible: {('Yes' if activity['visual_accessibility'] else 'No')}")
+        if activity["opening_hours"]["everyday"] == "24hs":
+            print(f"Opening hours: {activity['opening_hours']['everyday']}")
+        elif activity["opening_hours"]["everyday"] == "":
+            print("Opening hours:")
+            for time in activity['opening_hours']['specific_times']:
+                print(f"    {time['day']} from {time['open']} to {time['close']}")
 
 
