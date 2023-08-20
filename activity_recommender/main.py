@@ -1,73 +1,243 @@
 import json
+# Changed import path
 from activities.search import Filter
-import inspect
-# *** import login
+# import login
 
 
-class main:
-    # Get data from JSON file
+class ActivityRecommender:
     def __init__(self):
-        # *** Change to relative path. It doesn't work for me, don't know why, but I have to use absolute paths for it to work
-        with open('C:/Users/Fabiana/Downloads/CFG degree/Group-1-activity-recommender/data/locations.json') as json_file:
-            self.data = json.load(json_file)
+        self.locations_data = self.load_locations_data()
 
-    # *** Here should come the login process
+    def load_locations_data(self):
+        # Changed path so it'd work
+        with open('../data/locations.json') as json_file:
+            data = json.load(json_file)
+        return data
 
-    """
-    Filters data for each city
-    
-    :param city_name: The name of the city that you want to filter (your holiday destination)
-    :param filter_chosen: The method that user chooses to filter those activities (e.g. by price, rating, opening hours, etc)
-    :param *args: Arguments to be passed (if necessary) to the filter methods
-    """
-    def recommend_activities(self, city_name, filter_chosen, *args):
-        # Getting the data from a specific city (e.g. Madrid)
-        city_data = self.data.get(city_name.lower())
+    # All the methods related to login should be imported, not defined
+    def get_user(self, username):
+        if username in self.locations_data['users']:
+            return self.locations_data['users'][username]
+        return None
 
-        # *** This should be an error to be caught
-        if city_data is None:
-            return "City not found"
-
-        # Creating an instance of Filter class using the data from a specific city
-        city_filter = Filter(city_data)
-
-        # Get the name of the method you want to apply.
-        # You retrieve the method filter_chosen from the object city_filter
-        filter_method = getattr(city_filter, filter_chosen)
-
-        # Where the filtered activities, after the method has been applied, will be stored
-        filtered_results = []
-
-        # Count how many parameters the method needs
-        args_count = len(inspect.signature(filter_method).parameters)
-
-        # If the method needs no arguments, append the activities to filtered_results
-        if args_count == 0:
-            filtered_results.append(filter_method())
-        # If the number of arguments needed is the same as the arguments passed, append those results
-        elif args_count == len(args):
-            filtered_results.append(filter_method(*args))
+    def login(self):
+        username = input("Username: ")
+        user = self.get_user(username)
+        if user:
+            password = input("Password: ")
+            while password != user['password']:
+                print("Incorrect password. Please try again.")
+                password = input("Password: ")
+            print("Login successful!")
+            return True
         else:
-            # *** This should be an error to be caught
-            return "Incorrect number of filters"
+            print("User not found. Please register.")
+            return False
 
-        return filtered_results
+    def register(self):
+        username = input("Enter a username: ")
+        if self.get_user(username):
+            print("Username already exists. Please choose a different one.")
+            return
+        password = input("Enter a password: ")
+        self.locations_data['users'][username] = {'password': password}
+        self.save_locations_data()
+        print("Registration successful!")
+
+    def save_locations_data(self):
+        with open('data/locations.json', 'w') as json_file:
+            json.dump(self.locations_data, json_file, indent=4)
+
+    def main_menu(self):
+        print("Welcome to Activity Recommender!")
+        print("1. Login")
+        print("2. Register")
+        print("3. Search Activities")
+        print("4. Admin Functions (Admin Only)")
+        print("5. Exit")
+
+        choice = input("Please select an option: ")
+
+        if choice == "1":
+            self.login()
+        elif choice == "2":
+            self.register()
+        elif choice == "3":
+            self.search_activities_menu()
+        elif choice == "4":
+            self.admin_functions()
+        elif choice == "5":
+            # This counts as recursivity, right? haha
+            exit()
+        else:
+            print("Invalid choice!")
+            self.main_menu()
+
+    def search_activities_menu(self):
+        filter_city = input("Enter the city you're traveling to: ").lower()
+        # Need error handling for this (incorrect name city)
+        # Changed the function to make it work
+        filter_obj = Filter(self.locations_data[filter_city])
+
+        print("1. Filter by Price")
+        print("2. Filter by Rating")
+        print("3. Filter by Accessibility")
+        print("4. Filter by Opening Hours")
+        print("5. Go back to the main menu")
+
+        search_choice = input("Please select a search option: ")
+
+        if search_choice == "1":
+            self.search_by_price(filter_obj)
+        elif search_choice == "2":
+            self.search_by_rating(filter_obj)
+        elif search_choice == "3":
+            self.search_by_accessibility(filter_obj)
+        elif search_choice == "4":
+            self.search_by_opening_hours(filter_obj)
+        elif search_choice == "5":
+            self.main_menu()
+        else:
+            print("Invalid choice!")
+            self.search_activities_menu()
+
+    # Modified parameters to fit the methods of Filter class
+    def search_by_price(self, filter_obj):
+        target_price = input("Enter the target price: cheap, medium, expensive or free: ")
+        result = filter_obj.filter_by_price(target_price)
+
+        while True:
+            filter_obj.show_activity(result)
+
+            map_or_list = input("Do you want to see the map for that activity (map) or go back to the list of activities (list)? \n").lower()
+
+            if map_or_list == "map":
+                # function to show map
+                print("map")
+                break
+            elif map_or_list == "list":
+                continue
+            else:
+                print("Invalid input. Please enter 'map' or 'list'.")
+
+
+    def search_by_rating(self, filter_obj):
+        target_rating = int(input("Enter the target rating (1 to 5): "))
+        result = filter_obj.filter_by_rating([target_rating])
+        print(result)
+
+    # Fixed issue with indentation
+    def search_by_accessibility(self, filter_obj):
+        print("1. Wheelchair Accessible Entrance")
+        print("2. Hearing Accessibility")
+        print("3. Visual Accessibility")
+        print("4. Go back to search menu")
+
+        accessibility_choice = input("Please select an accessibility option: ")
+
+        if accessibility_choice == "1":
+            result = filter_obj.filter_by_wheelchair_accessible_entrance()
+            print(result)
+        elif accessibility_choice == "2":
+            result = filter_obj.filter_by_hearing_accessibility()
+            print(result)
+        elif accessibility_choice == "3":
+            result = filter_obj.filter_by_visual_accessibility()
+            print(result)
+        elif accessibility_choice == "4":
+            self.search_activities_menu()
+        else:
+            print("Invalid choice!")
+            self.search_by_accessibility(filter_obj)
+
+    def search_by_opening_hours(self, filter_obj):
+        print("1. Search by Current Opening Hours")
+        print("2. Search by Specific Date and Time")
+        print("3. Go back to search menu")
+
+        opening_hours_choice = input("Please select an opening hours option: ")
+
+        if opening_hours_choice == "1":
+            result = filter_obj.filter_by_current_opening_hours()
+            print(result)
+        elif opening_hours_choice == "2":
+            target_date = input("Enter the target date (dd/mm/yyyy): ")
+            target_time = input("Enter the target time (hh:mm): ")
+            result = filter_obj.filter_by_opening_hours(target_date, target_time)
+            print(result)
+        elif opening_hours_choice == "3":
+            self.search_activities_menu()
+        else:
+            print("Invalid choice!")
+            self.search_by_opening_hours(filter_obj)
+
+    # def show_activity(self, data):
+    #     selected_activity = input("What activity do you choose? \n")
+    #     for activity in data:
+    #         if activity["activity"] == selected_activity:
+    #             print(f"Name: {activity['activity']}")
+    #             print(f"Price: £{activity['price']}")
+    #             print(f"Rating: {activity['rating']} stars")
+    #             print(f"Wheelchair accessible: {activity['wheelchair_accessible_entrance']}")
+    #             print(f"Hearing impaired accessible: {activity['hearing_accessibility']}")
+    #             print(f"Visual impaired accessible: {activity['visual_accessibility']}")
+    #             if activity["opening_hours"]["everyday"] == "24hs":
+    #                 print(f"Opening hours: {activity['opening_hours']['everyday']}")
+    #             elif activity["opening_hours"]["everyday"] == "":
+    #                 print("Opening hours:")
+    #                 for time in activity['opening_hours']['specific_times']:
+    #                     print(f"    {time['day']} from {time['open']} to {time['close']}")
+                    #print(f"Opening hours: {activity['opening_hours']['specific_times']}")
+
+
+    # def admin_functions(self):
+    #     print("Admin Functions Menu")
+    #     print("1. Add User")
+    #     print("2. Remove User")
+    #     print("3. View User List")
+    #     choice = input("Select an option: ")
+    #
+    #     if choice == "1":
+    #         username = input("Enter username: ")
+    #         password = input("Enter password: ")
+    #         new_user = User(username, password)
+    #         try:
+    #             UserManager.add_user(new_user)
+    #             print("User added successfully.")
+    #         except ExistingUserError:
+    #             print("User already exists.")
+    #         except UserValidationError:
+    #             print("Invalid user details.")
+    #
+    #     elif choice == "2":
+    #         username = input("Enter username to remove: ")
+    #         password = input("Enter password: ")
+    #         user = self.get_user(username)
+    #
+    #         if user and password == user['password']:
+    #             if UserManager.remove_user(username):
+    #                 print("User removed successfully.")
+    #             else:
+    #                 print("User not found.")
+    #         else:
+    #             print("Invalid username or password.")
+    #
+    #     elif choice == "3":
+    #         print("User List:")
+    #         for username in UserManager.users.keys():
+    #             print(username)
+    #
+    #     else:
+    #         print("Invalid choice.")
+
+    def main(self):
+        self.main_menu()
 
 
 if __name__ == "__main__":
-    recommender = main()
+    recommender = ActivityRecommender()
+    recommender.main()
 
-    # city_name, filter_chosen and parameter are the parameter that we'll pass to recommender.recommend_activities
-    # Here they're specified. But for it to work properly in the program, they need to be inputted by user.
-    # city_name is already obtained by input as an example of how it should work
-    # *** change filter_chosen and parameter to inputs
-    city_name = input("What city do you want to go to? \n").lower()
-    filter_chosen = "filter_by_future_opening_hours"
-    parameter = ["12/05/2023", "23:50"]
 
-    # This calls the method recommend_activities from main, so it can return the activities recommended
-    recommendations = recommender.recommend_activities(city_name, filter_chosen, *parameter)
 
-    # Print all the activities that have been filtered
-    for result in recommendations:
-        print(result)
+

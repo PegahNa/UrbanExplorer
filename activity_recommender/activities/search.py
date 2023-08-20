@@ -34,10 +34,9 @@ class Filter:
             target_price = range(20, 100)
         elif target_price == "free":
             target_price = [0]
-
         result = [activity for activity in self.city if activity["price"] in target_price]
         pretty_result = json.dumps(result, indent=4)
-        return pretty_result
+        return result
 
     """
     Checks whether activities are within a range of stars (rating)
@@ -144,5 +143,28 @@ class Filter:
 
         pretty_result = json.dumps(open_activities, indent=4)
         return pretty_result
+
+
+    def show_activity(self, data):
+        for index, activity in enumerate(data, start=1):
+            print(f"{index}. {activity['activity']}")
+
+        selected_activity = input("What activity do you choose? Write the name\n")
+
+        
+        for activity in data:
+            if activity["activity"] == selected_activity:
+                print(f"Name: {activity['activity']}")
+                print(f"Price: £{activity['price']}")
+                print(f"Rating: {activity['rating']} stars")
+                print(f"Wheelchair accessible: {('Yes' if activity['wheelchair_accessible_entrance'] else 'No')}")
+                print(f"Hearing impaired accessible: {('Yes' if activity['hearing_accessibility'] else 'No')}")
+                print(f"Visual impaired accessible: {('Yes' if activity['visual_accessibility'] else 'No')}")
+                if activity["opening_hours"]["everyday"] == "24hs":
+                    print(f"Opening hours: {activity['opening_hours']['everyday']}")
+                elif activity["opening_hours"]["everyday"] == "":
+                    print("Opening hours:")
+                    for time in activity['opening_hours']['specific_times']:
+                        print(f"    {time['day']} from {time['open']} to {time['close']}")
 
 
