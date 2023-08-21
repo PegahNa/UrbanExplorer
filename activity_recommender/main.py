@@ -2,7 +2,7 @@ import json
 # Changed import path
 from activities.search import Filter
 # adding login import
-from activity_recommender.auth.login import UserManager, User
+from activity_recommender.auth.login import UserManager, User, ExistingUserError
 
 #  We need to do error handling for every function and a back function for each menu
 
@@ -65,17 +65,17 @@ class ActivityRecommender:
         # handling user's choice for login
         if choice == "1":
             username = input("Enter username: ")  # TODO: LIVVY TO CHECK
-            password = input("Enter password")
+            password = input("Enter password: ")
             # creating an instance of user
             user = User(username, password)
             if user.login():
                 print("Login successful\n")
                 # TODO: Add the menu and options to search
-                print("\n----MENU----\n1. Search Activities\n2. Logout\n")
+                choice = input("\n----MENU----\n1. Search Activities\n2. Logout\n") #TODO can we use choice for var name
                 if choice == "1":
                     self.search_activities_menu()
                 elif choice == "2":
-                    user.logout()
+                    print(user.logout())
                     exit()
                 else:
                     print("Invalid choice!")
@@ -93,7 +93,8 @@ class ActivityRecommender:
             # add error handling to handle if the user does exist when the user registers
             try:
                 user_manager.add_user(new_user)
-                print("Registration successful")
+                print("Registration successful, you can now login")
+                self.main_menu()
             except ExistingUserError:
                 print("Username already. Please register again with a different one.")
                 self.main_menu()
