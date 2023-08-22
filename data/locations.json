@@ -1,9 +1,4 @@
 {
-  "users": {
-    "sampleuser": {
-      "password": "samplepassword"
-    }
-  },
   "madrid": [
     {
       "activity": "Plaza Mayor",

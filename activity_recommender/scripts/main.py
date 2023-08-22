@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import os
 # Changed import path
 from activity_recommender.activities.search import Filter
 # adding login import
@@ -16,7 +17,8 @@ class ActivityRecommender:
 
     def load_locations_data(self):
         # Changed path so it'd work
-        with open('../../data/locations.json') as json_file:
+        location_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "locations.json")
+        with open(location_file) as json_file:
             data = json.load(json_file)
         return data
 
