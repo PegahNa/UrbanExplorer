@@ -20,6 +20,7 @@ class Filter:
     def __init__(self, data_city, city):
         self.data_city = data_city
         self.city = city
+        self.filtered_results = []
 
     """
     Checks whether activities are within a range of money
@@ -27,8 +28,8 @@ class Filter:
     :return: JSON representation of activities within that range price
     """
     def filter_by_price(self, target_price):
-        result = [activity for activity in self.data_city if activity["price"] in get_range_of_prices(target_price)]
-        return result
+        self.filtered_results = [activity for activity in self.data_city if activity["price"] in get_range_of_prices(target_price)]
+        return self.filtered_results
 
     """
     Checks whether activities are within a range of stars (rating)
@@ -41,22 +42,22 @@ class Filter:
             if target_rating[0] not in [0, 1, 2, 3, 4, 5.0]:
                 raise RatingHigherThan5Stars(target_rating)
             else:
-                result = [activity for activity in self.data_city if activity["rating"] in target_rating]
-                return result
+                self.filtered_results = [activity for activity in self.data_city if activity["rating"] in target_rating]
+                return self.filtered_results
         except RatingHigherThan5Stars as err:
             return "The rating requested is not in the range of 1-5 stars", err.value
 
     def filter_by_wheelchair_accessible_entrance(self):
-        result = [activity for activity in self.data_city if activity["wheelchair_accessible_entrance"] is True]
-        return result
+        self.filtered_results = [activity for activity in self.data_city if activity["wheelchair_accessible_entrance"] is True]
+        return self.filtered_results
 
     def filter_by_hearing_accessibility(self):
-        result = [activity for activity in self.data_city if activity["hearing_accessibility"] is True]
-        return result
+        self.filtered_results = [activity for activity in self.data_city if activity["hearing_accessibility"] is True]
+        return self.filtered_results
 
     def filter_by_visual_accessibility(self):
-        result = [activity for activity in self.data_city if activity["visual_accessibility"] is True]
-        return result
+        self.filtered_results = [activity for activity in self.data_city if activity["visual_accessibility"] is True]
+        return self.filtered_results
 
     """
     Filters activities open on a specified future date and time (inputted by user, dates of their holidays).
@@ -72,18 +73,16 @@ class Filter:
         day_target = datetime.datetime.strptime(target_date, date_format).strftime("%A")
         time_target = datetime.datetime.strptime(target_time, date_time).strftime("%H:%M")
 
-        result = []
-
         # For activities open 24hs and activities that much in time and day, append to open_activities
         for activity in self.data_city:
             if activity["opening_hours"]["everyday"] == "24hs":
-                result.append(activity)
+                self.filtered_results.append(activity)
             elif activity["opening_hours"]["specific_times"] is not None:
                 for opening in activity["opening_hours"]["specific_times"]:
                     if opening["day"] == day_target and opening["open"] <= time_target <= opening["close"]:
-                        result.append(activity)
+                        self.filtered_results.append(activity)
                         break
-        return result
+        return self.filtered_results
 
     """
     Filters activities that are currently open based on the current day and time.
@@ -93,19 +92,17 @@ class Filter:
         current_day = datetime.datetime.now().strftime("%A")
         current_time = datetime.datetime.now().strftime("%H:%M")
 
-        result = []
-
         for activity in self.data_city:
             if activity["opening_hours"]["everyday"] == "24hs":
-                result.append(activity)
+                self.filtered_results.append(activity)
             else:
                 specific_times = activity["opening_hours"]["specific_times"]
                 if specific_times is not None:
                     for opening in specific_times:
                         if opening["day"] == current_day and opening["open"] <= current_time <= opening["close"]:
-                            result.append(activity)
+                            self.filtered_results.append(activity)
                             break
-        return result
+        return self.filtered_results
 
 
     def show_activity_details(self, data):
