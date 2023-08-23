@@ -1,4 +1,4 @@
-
+import bcrypt
 # Function that returns a range of ratings
 def get_range_of_ratings(target_rating):
     if target_rating == 0:
