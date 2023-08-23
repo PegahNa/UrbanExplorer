@@ -3,16 +3,45 @@ import os
 import json
 from unittest import TestCase
 from activity_recommender.auth.login import UserManager, User, ExistingUserError, UserValidationError
-
+from activity_recommender.utils.login_utils import verify_password, hash_password
 
 class TestAuthentication(TestCase):  # TODO check if I can do one class for both so it's one setup for both
 
     original_users_data = None
     dummy_data = None
 
+    # @classmethod
+    # def setUpClass(cls):
+    #     # create a backup for original users data so tests do not intefere
+    #     if os.path.exists(UserManager.user_file):
+    #         with open(UserManager.user_file, "r") as file:
+    #             cls.original_users_data = file.read()  # this will be re-instated in my file in the teardown
+    #     else:
+    #         cls.original_users_data = None
+    #
+    #     # creating dummy data for testing:
+    #     cls.dummy_data = {
+    #                         "test1": {
+    #                             "username": "test1",
+    #                             "password": "pass1"
+    #                         },
+    #                         "test2": {
+    #                             "username": "test2",
+    #                             "password": "pass2"
+    #                         },
+    #                         "test3": {
+    #                             "username": "test3",
+    #                             "password": "pass3"
+    #                         }
+    #                     }
+    #
+    #     # write dummy data into my JSON file
+    #     with open(UserManager.user_file, "w") as file:
+    #         json.dump(cls.dummy_data, file)
+
     @classmethod
     def setUpClass(cls):
-        # create a backup for original users data so tests do not intefere
+        # create a backup for original users data so tests do not interfere
         if os.path.exists(UserManager.user_file):
             with open(UserManager.user_file, "r") as file:
                 cls.original_users_data = file.read()  # this will be re-instated in my file in the teardown
@@ -20,20 +49,21 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
             cls.original_users_data = None
 
         # creating dummy data for testing:
+        # adding a hash function from utils to the dummy passwords
         cls.dummy_data = {
-                            "test1": {
-                                "username": "test1",
-                                "password": "pass1"
-                            },
-                            "test2": {
-                                "username": "test2",
-                                "password": "pass2"
-                            },
-                            "test3": {
-                                "username": "test3",
-                                "password": "pass3"
-                            }
-                        }
+            "test1": {
+                "username": "test1",
+                "password": hash_password("pass1")
+            },
+            "test2": {
+                "username": "test2",
+                "password": hash_password("pass2")
+            },
+            "test3": {
+                "username": "test3",
+                "password": hash_password("pass3")
+            }
+        }
 
         # write dummy data into my JSON file
         with open(UserManager.user_file, "w") as file:
@@ -45,7 +75,8 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
 
     def test_retrieve_users(self):
         self.assertEqual(UserManager.users["test1"].username, "test1")
-        self.assertEqual(UserManager.users["test1"].password, "pass1")
+        # updated to reflect the hashed dummy data
+        self.assertTrue(verify_password("pass1", UserManager.users["test1"].password))
 
     def test_save_users(self):
         new_user = User("test4", "pass4")  # create new instance of user
@@ -65,6 +96,7 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
         UserManager.add_user(new_user)
 
         self.assertIn("test5", UserManager.users)
+        self.assertTrue(verify_password("pass5", UserManager.users["test5"].password))
         with open(UserManager.user_file, 'r') as file:
             data = json.load(file)
         self.assertIn("test5", data)
@@ -83,7 +115,8 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
     def test_get_user(self):
         user = UserManager.get_user("test1")
         self.assertEqual(user.username, "test1")
-        self.assertEqual(user.password, "pass1")
+        # updated to include hash verification
+        self.assertTrue(verify_password("pass1", user.password))
         # TODO could add more testing to check None is passed when the user doesn't exist
 
     def test_valid_login(self):
@@ -96,8 +129,10 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
 
     def test_change_password(self):
         user = User("test1", "pass1")
-        user.change_password("thisismynewpass")
-        self.assertEqual(user.password, "thisismynewpass")
+        new_password = "thisismynewpass"
+        user.change_password(new_password)
+        # update to include the use of the utils function to verify the new password hash
+        self.assertTrue(verify_password(new_password, user.password))
 
     def test_logout(self):
         self.assertEqual(User.logout(), "You have successfully been logged out")
