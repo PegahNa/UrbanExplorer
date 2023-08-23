@@ -1,5 +1,7 @@
 from activity_recommender.utils.utils import get_range_of_ratings, get_range_of_prices, euro_or_dollars
 import datetime
+import os
+import json
 
 # Custom exception to raise an error if user asks for a rating higher than 5 stars
 class RatingHigherThan5Stars(Exception):
@@ -20,7 +22,7 @@ class Filter:
     def __init__(self, data_city, city):
         self.data_city = data_city
         self.city = city
-        self.filtered_results = []
+        self.filtered_results = data_city
 
     """
     Checks whether activities are within a range of money
@@ -28,7 +30,7 @@ class Filter:
     :return: JSON representation of activities within that range price
     """
     def filter_by_price(self, target_price):
-        self.filtered_results = [activity for activity in self.data_city if activity["price"] in get_range_of_prices(target_price)]
+        self.filtered_results = [activity for activity in self.filtered_results if activity["price"] in get_range_of_prices(target_price)]
         return self.filtered_results
 
     """
@@ -42,21 +44,21 @@ class Filter:
             if target_rating[0] not in [0, 1, 2, 3, 4, 5.0]:
                 raise RatingHigherThan5Stars(target_rating)
             else:
-                self.filtered_results = [activity for activity in self.data_city if activity["rating"] in target_rating]
+                self.filtered_results = [activity for activity in self.filtered_results if activity["rating"] in target_rating]
                 return self.filtered_results
         except RatingHigherThan5Stars as err:
             return "The rating requested is not in the range of 1-5 stars", err.value
 
     def filter_by_wheelchair_accessible_entrance(self):
-        self.filtered_results = [activity for activity in self.data_city if activity["wheelchair_accessible_entrance"] is True]
+        self.filtered_results = [activity for activity in self.filtered_results if activity["wheelchair_accessible_entrance"] is True]
         return self.filtered_results
 
     def filter_by_hearing_accessibility(self):
-        self.filtered_results = [activity for activity in self.data_city if activity["hearing_accessibility"] is True]
+        self.filtered_results = [activity for activity in self.filtered_results if activity["hearing_accessibility"] is True]
         return self.filtered_results
 
     def filter_by_visual_accessibility(self):
-        self.filtered_results = [activity for activity in self.data_city if activity["visual_accessibility"] is True]
+        self.filtered_results = [activity for activity in self.filtered_results if activity["visual_accessibility"] is True]
         return self.filtered_results
 
     """
@@ -105,15 +107,16 @@ class Filter:
         return self.filtered_results
 
 
-    def show_activity_details(self, data):
-        for index, activity in enumerate(data, start=1):
+    def show_activity_details(self):
+        for index, activity in enumerate(self.filtered_results, start=1):
             print(f"{index}. {activity['activity']}")
 
         selected_activity = int(input("What activity do you choose? Write the number \n"))
+        print("")
 
-        number_of_options = list(range(1, len(data) + 1))
+        number_of_options = list(range(1, len(self.filtered_results) + 1))
         if selected_activity in number_of_options:
-            activity = data[selected_activity-1]
+            activity = self.filtered_results[selected_activity-1]
             print(f"Name: {activity['activity']}")
             print(f"Price: {euro_or_dollars(self.city)}{activity['price']}")
             print(f"Rating: {activity['rating']} stars")
@@ -128,6 +131,14 @@ class Filter:
                     print(f"    {time['day']} from {time['open']} to {time['close']}")
         else:
             print(f"Invalid input. It can only be {', '.join(map(str, number_of_options))}")
-            self.show_activity_details(data)
+            self.show_activity_details(self.filtered_results)
 
 
+# location_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "locations.json")
+# with open(location_file) as json_file:
+#     data = json.load(json_file)
+#     obj_test = Filter(data["madrid"], "madrid")
+#     print(obj_test)
+#     obj_test.filter_by_price("free")
+#     obj_test.filter_by_wheelchair_accessible_entrance()
+#     obj_test.show_activity_details()

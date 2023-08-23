@@ -5,6 +5,7 @@ import os
 from activity_recommender.activities.search import Filter
 # adding login import
 from activity_recommender.auth.login import UserManager, User, ExistingUserError
+from activity_recommender.utils.utils import print_filters_used, get_filter_from_numbers
 
 #  We need to do error handling for every function and a back function for each menu
 
@@ -14,6 +15,8 @@ class ActivityRecommender:
         self.locations_data = self.load_locations_data()
         self.city = None
         self.filter_obj = None
+        self.filters_applied = []
+        self.filtered_results = []
 
     def load_locations_data(self):
         # Changed path so it'd work
@@ -89,41 +92,74 @@ class ActivityRecommender:
         city_options = ["madrid", "paris", "new york"]
         if self.city in city_options:
             self.filter_obj = Filter(self.locations_data[self.city], self.city)
-            self.search_activities_menu()
+            self.choose_more_than_one_filter()
+            # self.search_activities_menu()
         else:
             print("Invalid choice. \n")
             self.choose_activity()
 
-    def search_activities_menu(self):
+    """ 
+    Function to apply all the filters chosen.
+    It takes a list of methods selected by user and applies one by one
+    :param methods: list of name of methods
+    """
+    def apply_filters(self, methods):
+        for method_name in methods:
+            method = getattr(self, method_name)
+            method()
+
+    # This needs error handling
+    def choose_more_than_one_filter(self):
+        # Erase history of filters chosen each time you call this function
+        self.filters_applied = []
         print("1. Filter by Price")
         print("2. Filter by Rating")
         print("3. Filter by Accessibility")
-        print("4. Filter by Opening Hours")
-        print("5. Go back to the main menu \n")
+        print("4. Filter by Opening Hours \n")
+        filters_chosen = input("Select all the filters you want to apply, separated by a comma (e.g. 1, 2, 3) \n")
 
-        search_choice = input("Please select a search option: \n")
-        # I should make this a function in utils
-        if search_choice == "1":
-            self.search_by_price()
-        elif search_choice == "2":
-            self.search_by_rating()
-        elif search_choice == "3":
-            self.search_by_accessibility()
-        elif search_choice == "4":
-            self.search_by_opening_hours()
-        elif search_choice == "5":
-            self.main_menu()
-        else:
-            print("Invalid choice.")
-            self.search_activities_menu()
+        # Gets a list of numbers selected by user (e.g. ["1", "3", "4"])
+        filters_chosen = list(filters_chosen.split(", "))
+        # Using a utils function, it gets a list of the names of those filters (e.g. ["search_by_price", "search_by_accessibility", "search_by_opening_hours"])
+        filters_to_apply = get_filter_from_numbers(filters_chosen)
 
+        # Applies each filter by calling self.name_of_method()
+        self.apply_filters(filters_to_apply)
+        # It will show all the results obtained
+        self.show_activities()
+
+    # def search_activities_menu(self):
+    #     print("1. Filter by Price")
+    #     print("2. Filter by Rating")
+    #     print("3. Filter by Accessibility")
+    #     print("4. Filter by Opening Hours")
+    #     print("5. Go back to the main menu \n")
+    #
+    #     search_choice = input("Please select a search option: \n")
+    #     # I should make this a function in utils
+    #     if search_choice == "1":
+    #         self.search_by_price()
+    #     elif search_choice == "2":
+    #         self.search_by_rating()
+    #     elif search_choice == "3":
+    #         self.search_by_accessibility()
+    #     elif search_choice == "4":
+    #         self.search_by_opening_hours()
+    #     elif search_choice == "5":
+    #         self.main_menu()
+    #     else:
+    #         print("Invalid choice.")
+    #         self.search_activities_menu()
+    #
     # Modified parameters to fit the methods of Filter class
+
     def search_by_price(self):
         target_price = input("Enter the target price: cheap, medium, expensive or free: \n").lower()
         price_options = ["cheap", "medium", "expensive", "free"]
         if target_price in price_options:
-            result = self.filter_obj.filter_by_price(target_price)
-            self.show_activities(result)
+            self.filtered_results = self.filter_obj.filter_by_price(target_price)
+            self.filters_applied.append({"filter_by_price()": target_price})
+            #self.show_activities(result)
         else:
             print("Invalid choice.")
             self.search_by_price()
@@ -133,8 +169,9 @@ class ActivityRecommender:
             target_rating = int(input("Enter the target rating (1 to 5): \n"))
             rating_options = [1, 2, 3, 4, 5]
             if target_rating in rating_options:
-                result = self.filter_obj.filter_by_rating(int(target_rating))
-                self.show_activities(result)
+                self.filtered_results = self.filter_obj.filter_by_rating(int(target_rating))
+                self.filters_applied.append({"filter_by_rating()": target_rating})
+                #self.show_activities(result)
             else:
                 print("Invalid choice.")
                 self.search_by_rating()
@@ -147,21 +184,24 @@ class ActivityRecommender:
         print("1. Wheelchair Accessible Entrance")
         print("2. Hearing Accessibility")
         print("3. Visual Accessibility")
-        print("4. Go back to search menu \n")
+        print("4. Go back to search by filters menu \n")
 
         accessibility_choice = input("Please select an accessibility option: \n")
 
         if accessibility_choice == "1":
-            result = self.filter_obj.filter_by_wheelchair_accessible_entrance()
-            self.show_activities(result)
+            self.filtered_results = self.filter_obj.filter_by_wheelchair_accessible_entrance()
+            self.filters_applied.append({"filter_by_wheelchair_accessible_entrance()": ""})
+            #self.show_activities(result)
         elif accessibility_choice == "2":
-            result = self.filter_obj.filter_by_hearing_accessibility()
-            self.show_activities(result)
+            self.filter_obj.filter_by_hearing_accessibility()
+            self.filters_applied.append({"filter_by_hearing_accessibility()": ""})
+            #self.show_activities(result)
         elif accessibility_choice == "3":
-            result = self.filter_obj.filter_by_visual_accessibility()
-            self.show_activities(result)
+            self.filter_obj.filter_by_visual_accessibility()
+            self.filters_applied.append({"filter_by_visual_accessibility()": ""})
+            #self.show_activities(result)
         elif accessibility_choice == "4":
-            self.search_activities_menu()
+            self.choose_more_than_one_filter()
         else:
             print("Invalid choice. \n")
             self.search_by_accessibility()
@@ -169,13 +209,14 @@ class ActivityRecommender:
     def search_by_opening_hours(self):
         print("1. Search by Current Opening Hours")
         print("2. Search by Specific Date and Time")
-        print("3. Go back to search menu \n")
+        print("3. Go back to search by filters menu \n")
 
         opening_hours_choice = input("Please select an opening hours option: \n")
 
         if opening_hours_choice == "1":
-            result = self.filter_obj.filter_by_current_opening_hours()
-            self.show_activities(result)
+            self.filter_obj.filter_by_current_opening_hours()
+            self.filters_applied.append({"filter_by_current_opening_hours()": ""})
+            #self.show_activities(result)
         elif opening_hours_choice == "2":
             while True:
                 target_date = input("Enter the date you're going to travel (dd/mm/yyyy): ")
@@ -183,31 +224,37 @@ class ActivityRecommender:
                 try:
                     datetime.strptime(target_date, "%d/%m/%Y")
                     datetime.strptime(target_time, "%H:%M")
-                    result = self.filter_obj.filter_by_future_opening_hours(target_date, target_time)
-                    self.show_activities(result)
+                    self.filter_obj.filter_by_future_opening_hours(target_date, target_time)
+                    self.filters_applied.append({"filter_by_future_opening_hours()": f"Date: {target_date}. Time: {target_time}."})
+                    #self.show_activities(result)
                     break
                 except ValueError:
                     print("Wrong format. Please provide the date in dd/mm/yyyy and the time in hh:mm format.")
         elif opening_hours_choice == "3":
-            self.search_activities_menu()
+            self.choose_more_than_one_filter()
         else:
             print("Invalid choice.")
             self.search_by_opening_hours()
 
-    def show_activities(self, filtered_activities):
-        if not filtered_activities:
+    def show_activities(self):
+        if not self.filtered_results:
             print("There are not results for that option")
-            self.search_activities_menu()
+            self.choose_more_than_one_filter()
         else:
             while True:
-                self.filter_obj.show_activity_details(filtered_activities)
+                self.filter_obj.show_activity_details()
+                filter_chosen = print_filters_used(self.filters_applied)
 
                 print("\n Menu")
                 print("1. Go to map of activity")
                 print("2. Go back to list of activities")
-                print("3. Go to filters menu")
+                print("3. Go to search by filter menu and change your filters \n")
+                print(f"Filters selected at the moment: ")
 
-                map_or_list = input("Choose an option (write the number) \n")
+                for filter in filter_chosen:
+                    print(filter)
+
+                map_or_list = input("\nChoose an option (write the number) \n")
 
                 if map_or_list == "1":
                     # function to show map
@@ -216,7 +263,7 @@ class ActivityRecommender:
                 elif map_or_list == "2":
                     continue
                 elif map_or_list == "3":
-                    self.search_activities_menu()
+                    self.choose_more_than_one_filter()
                 else:
                     print("Invalid input.")
 
