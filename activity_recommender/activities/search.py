@@ -1,4 +1,4 @@
-from activity_recommender.utils.utils import get_range_of_ratings, get_range_of_prices, euro_or_dollars
+from activity_recommender.utils.search_utils import get_range_of_ratings, get_range_of_prices, euro_or_dollars
 import datetime
 import os
 import json

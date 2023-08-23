@@ -5,7 +5,7 @@ import os
 from activity_recommender.activities.search import Filter
 # adding login import
 from activity_recommender.auth.login import UserManager, User, ExistingUserError
-from activity_recommender.utils.utils import print_filters_used, get_filter_from_numbers
+from activity_recommender.utils.main_utils import print_filters_used, get_filter_from_numbers
 
 #  We need to do error handling for every function and a back function for each menu
 

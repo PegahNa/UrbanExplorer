@@ -1,6 +1,6 @@
 import json
 import unittest
-from ..activities.search import Filter, RatingHigherThan5Stars
+from activity_recommender.activities.search import Filter, RatingHigherThan5Stars
 
 
 class TestFilter(unittest.TestCase):
