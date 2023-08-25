@@ -8,12 +8,38 @@
 </head>
 <body>
     <h1>Search Activities</h1>
-    <form action="{{ url_for('search_activities') }}" method="post">
-        <label for="parameter">Search Parameter:</label>
-        <input type="text" name="parameter" required>
-        <br><br>
-        <input type="submit" value="Search">
-    </form>
+<form action="{{ url_for('search_activities') }}" method="post">
+    <label for="citySelect">Choose a city:</label>
+    <select name="city" id="citySelect" required>
+        <option value="New York">New York</option>
+        <option value="Los Angeles">Los Angeles</option>
+        <!-- Add other cities as needed -->
+    </select>
+    <br><br>
+
+    <label for="priceInput">Maximum Price:</label>
+    <input type="number" name="price" id="priceInput" min="0">
+    <br><br>
+
+    <label for="ratingInput">Minimum Rating:</label>
+    <input type="number" name="rating" id="ratingInput" min="0" max="5" step="0.1">
+    <br><br>
+
+    <label for="wheelchairCheckbox">Wheelchair Accessible:</label>
+    <input type="checkbox" name="wheelchair" id="wheelchairCheckbox">
+    <br><br>
+
+    <label for="hearingCheckbox">Hearing Accessible:</label>
+    <input type="checkbox" name="hearing" id="hearingCheckbox">
+    <br><br>
+
+    <label for="visualCheckbox">Visual Accessible:</label>
+    <input type="checkbox" name="visual" id="visualCheckbox">
+    <br><br>
+
+    <input type="submit" value="Search">
+</form>
+
     <br>
     {% if results %}
     <h2>Search Results:</h2>
