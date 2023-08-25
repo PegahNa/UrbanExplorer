@@ -1,3 +1,4 @@
+import bcrypt
 # password hashing functions
 # creating the hashed password
 def hash_password(password):
