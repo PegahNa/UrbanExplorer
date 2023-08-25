@@ -1,5 +1,7 @@
 import json
 import os
+# import bcrypt # TODO test running with this commented out
+from activity_recommender.utils.login_utils import hash_password, verify_password
 
 
 # initialise custom errors
@@ -54,6 +56,9 @@ class UserManager:
 
     @classmethod
     def add_user(cls, user):
+        # adding functionality to hash user password
+        user.password = hash_password(user.password)
+
         if not user.username or not user.password:
             raise UserValidationError("Username and password should not be empty.")
         if user.username in cls.users:
@@ -75,13 +80,15 @@ class User:
 
     def login(self):
         existing_user = UserManager.get_user(self.username)
-        if existing_user and existing_user.password == self.password:
+        # added the functionality to check the hashed password
+        if existing_user and verify_password(self.password, existing_user.password):
             return True  # added this as boolean values, so it's easier for you to use in main.py @Pegah
         else:
             return False
 
     def change_password(self, new_password):
-        self.password = new_password
+        # updated function to add hashing functionality
+        self.password = hash_password(new_password)
         return "Password has successfully been updated"
 
     @staticmethod
