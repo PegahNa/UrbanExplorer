@@ -25,7 +25,7 @@ def get_location_info(query):
     return "Location not found", None, None
 
 
-def main(location_to_search):
+def get_url(location_to_search):
     #2user_input = input("Enter a destination: ")
     location, latitude, longitude = get_location_info(location_to_search)
 
@@ -38,5 +38,5 @@ def main(location_to_search):
 
 
 if __name__ == "__main__":
-    result = main()
+    result = get_url()
 
