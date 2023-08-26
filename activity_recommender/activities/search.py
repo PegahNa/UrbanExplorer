@@ -5,14 +5,7 @@ import json
 
 # Custom exception to raise an error if user asks for a rating higher than 5 stars
 class RatingHigherThan5Stars(Exception):
-    # Constructor or Initializer
-    def __init__(self, value):
-        self.value = value
-        print("self.value ", self.value)
-
-    # __str__ is to print() the value
-    def __str__(self):
-        return f"The rating {self.value} is not in the range of 1-5 stars"
+    pass
 
 
 
@@ -31,6 +24,7 @@ class Filter:
     """
     def filter_by_price(self, target_price):
         self.filtered_results = [activity for activity in self.filtered_results if activity["price"] in get_range_of_prices(target_price)]
+        # pretty_result = json.dumps(self.filtered_results, indent=4)
         return self.filtered_results
 
     """
@@ -41,13 +35,14 @@ class Filter:
     def filter_by_rating(self, desired_rating):
         target_rating = get_range_of_ratings(desired_rating)
         try:
-            if target_rating[0] not in [0, 1, 2, 3, 4, 5.0]:
-                raise RatingHigherThan5Stars(target_rating)
+            if target_rating is None:
+                raise RatingHigherThan5Stars()
             else:
                 self.filtered_results = [activity for activity in self.filtered_results if activity["rating"] in target_rating]
+                # pretty_result = json.dumps(self.filtered_results, indent=4)
                 return self.filtered_results
-        except RatingHigherThan5Stars as err:
-            return "The rating requested is not in the range of 1-5 stars", err.value
+        except RatingHigherThan5Stars:
+            print("The rating requested is not in the range of 1-5 stars")
 
     def filter_by_wheelchair_accessible_entrance(self):
         self.filtered_results = [activity for activity in self.filtered_results if activity["wheelchair_accessible_entrance"] is True]
@@ -75,15 +70,18 @@ class Filter:
         day_target = datetime.datetime.strptime(target_date, date_format).strftime("%A")
         time_target = datetime.datetime.strptime(target_time, date_time).strftime("%H:%M")
 
+        list_of_activities = []
+
         # For activities open 24hs and activities that much in time and day, append to open_activities
-        for activity in self.data_city:
+        for activity in self.filtered_results:
             if activity["opening_hours"]["everyday"] == "24hs":
-                self.filtered_results.append(activity)
+                list_of_activities.append(activity)
             elif activity["opening_hours"]["specific_times"] is not None:
                 for opening in activity["opening_hours"]["specific_times"]:
                     if opening["day"] == day_target and opening["open"] <= time_target <= opening["close"]:
-                        self.filtered_results.append(activity)
+                        list_of_activities.append(activity)
                         break
+        self.filtered_results = list_of_activities
         return self.filtered_results
 
     """
@@ -94,16 +92,20 @@ class Filter:
         current_day = datetime.datetime.now().strftime("%A")
         current_time = datetime.datetime.now().strftime("%H:%M")
 
-        for activity in self.data_city:
+        list_of_activities = []
+
+        for activity in self.filtered_results:
             if activity["opening_hours"]["everyday"] == "24hs":
-                self.filtered_results.append(activity)
+                list_of_activities.append(activity)
             else:
                 specific_times = activity["opening_hours"]["specific_times"]
                 if specific_times is not None:
                     for opening in specific_times:
                         if opening["day"] == current_day and opening["open"] <= current_time <= opening["close"]:
-                            self.filtered_results.append(activity)
+                            list_of_activities.append(activity)
                             break
+
+        self.filtered_results = list_of_activities
         return self.filtered_results
 
 
@@ -116,7 +118,7 @@ class Filter:
 
         number_of_options = list(range(1, len(self.filtered_results) + 1))
         if selected_activity in number_of_options:
-            activity = self.filtered_results[selected_activity-1]
+            activity = self.filtered_results[selected_activity - 1]
             print(f"Name: {activity['activity']}")
             print(f"Price: {euro_or_dollars(self.city)}{activity['price']}")
             print(f"Rating: {activity['rating']} stars")
@@ -138,7 +140,10 @@ class Filter:
 # with open(location_file) as json_file:
 #     data = json.load(json_file)
 #     obj_test = Filter(data["madrid"], "madrid")
-#     print(obj_test)
-#     obj_test.filter_by_price("free")
-#     obj_test.filter_by_wheelchair_accessible_entrance()
-#     obj_test.show_activity_details()
+    # print(obj_test.filter_by_price("medium"))
+    # print(obj_test.filter_by_rating([6]))
+    # print(obj_test.filter_by_rating(4))
+
+
+    # obj_test.filter_by_wheelchair_accessible_entrance()
+    # obj_test.show_activity_details()

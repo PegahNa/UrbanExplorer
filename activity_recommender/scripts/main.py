@@ -25,11 +25,6 @@ class ActivityRecommender:
             data = json.load(json_file)
         return data
 
-    # Don't think we need this function...
-    def save_locations_data(self):
-        with open('data/locations.json', 'w') as json_file:
-            json.dump(self.locations_data, json_file, indent=4)
-
     # updating the main menu function for login
     def main_menu(self):
 
@@ -111,7 +106,8 @@ class ActivityRecommender:
     # This needs error handling
     def choose_more_than_one_filter(self):
         # Erase history of filters chosen each time you call this function
-        self.filters_applied = []
+
+
         print("1. Filter by Price")
         print("2. Filter by Rating")
         print("3. Filter by Accessibility")
@@ -125,33 +121,10 @@ class ActivityRecommender:
 
         # Applies each filter by calling self.name_of_method()
         self.apply_filters(filters_to_apply)
+
         # It will show all the results obtained
         self.show_activities()
 
-    # def search_activities_menu(self):
-    #     print("1. Filter by Price")
-    #     print("2. Filter by Rating")
-    #     print("3. Filter by Accessibility")
-    #     print("4. Filter by Opening Hours")
-    #     print("5. Go back to the main menu \n")
-    #
-    #     search_choice = input("Please select a search option: \n")
-    #     # I should make this a function in utils
-    #     if search_choice == "1":
-    #         self.search_by_price()
-    #     elif search_choice == "2":
-    #         self.search_by_rating()
-    #     elif search_choice == "3":
-    #         self.search_by_accessibility()
-    #     elif search_choice == "4":
-    #         self.search_by_opening_hours()
-    #     elif search_choice == "5":
-    #         self.main_menu()
-    #     else:
-    #         print("Invalid choice.")
-    #         self.search_activities_menu()
-    #
-    # Modified parameters to fit the methods of Filter class
 
     def search_by_price(self):
         target_price = input("Enter the target price: cheap, medium, expensive or free: \n").lower()
@@ -159,7 +132,6 @@ class ActivityRecommender:
         if target_price in price_options:
             self.filtered_results = self.filter_obj.filter_by_price(target_price)
             self.filters_applied.append({"filter_by_price()": target_price})
-            #self.show_activities(result)
         else:
             print("Invalid choice.")
             self.search_by_price()
@@ -171,7 +143,6 @@ class ActivityRecommender:
             if target_rating in rating_options:
                 self.filtered_results = self.filter_obj.filter_by_rating(int(target_rating))
                 self.filters_applied.append({"filter_by_rating()": target_rating})
-                #self.show_activities(result)
             else:
                 print("Invalid choice.")
                 self.search_by_rating()
@@ -244,7 +215,6 @@ class ActivityRecommender:
             while True:
                 self.filter_obj.show_activity_details()
                 filter_chosen = print_filters_used(self.filters_applied)
-
                 print("\n Menu")
                 print("1. Go to map of activity")
                 print("2. Go back to list of activities")
@@ -257,12 +227,13 @@ class ActivityRecommender:
                 map_or_list = input("\nChoose an option (write the number) \n")
 
                 if map_or_list == "1":
-                    # function to show map
-                    print("map")
                     exit()
                 elif map_or_list == "2":
                     continue
                 elif map_or_list == "3":
+                    self.filters_applied.clear()
+                    self.filtered_results.clear()
+                    self.filter_obj = Filter(self.locations_data[self.city], self.city)
                     self.choose_more_than_one_filter()
                 else:
                     print("Invalid input.")
