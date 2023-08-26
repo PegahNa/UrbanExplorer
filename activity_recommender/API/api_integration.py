@@ -25,9 +25,9 @@ def get_location_info(query):
     return "Location not found", None, None
 
 
-def main():
-    user_input = input("Enter a destination: ")
-    location, latitude, longitude = get_location_info(user_input)
+def main(location_to_search):
+    #2user_input = input("Enter a destination: ")
+    location, latitude, longitude = get_location_info(location_to_search)
 
     if latitude is not None and longitude is not None:
         bing_maps_url = f"http://www.bing.com/maps?cp={latitude}~{longitude}"

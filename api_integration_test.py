@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from api_integration import get_location_info
+from activity_recommender.API.api_integration import get_location_info
 
 class TestGetLocationInfo(unittest.TestCase):
     @patch("requests.get")
