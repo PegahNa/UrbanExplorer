@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from activity_recommender.auth.login import UserManager, User
 from activity_recommender.activities.search import Filter
-from activity_recommender.utils.api_utils import get_data_for_city
+from activity_recommender.utils.flask_utils import get_data_for_city
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # This should ideally be stored securely and not hardcoded
+app.secret_key = "app_secret_key"  # This should ideally be stored securely and not hardcoded
 
 # load users into memory from the JSON file
 try:
@@ -15,7 +15,12 @@ except Exception as e:
 
 @app.route('/')
 def home():
-    return render_template('index.html')  # We'll need to create this template later
+    return render_template('index.html')
+
+
+@app.route('/menu', methods=['GET', 'POST'])
+def menu():
+    return render_template("menu.html")
 
 
 @app.route('/flask_login', methods=['GET', 'POST'])
@@ -28,7 +33,7 @@ def flask_login():
         if user.login():
             flash('Logged in successfully!', 'success')
             session["logged_in"] = True
-            return redirect(url_for('search_activities'))
+            return render_template("menu.html")
         else:
             flash('Login failed. Check your credentials.', 'danger')
 
@@ -56,8 +61,8 @@ def search_activities():
         return redirect(url_for("flask_login"))
     if request.method == 'POST':
         city = request.form['city']
-        price = float(request.form.get('price', 0))
-        rating = float(request.form.get('rating', 0))
+        price = request.form['price']
+        rating = request.form['rating']
         wheelchair = 'wheelchair' in request.form
         hearing = 'hearing' in request.form
         visual = 'visual' in request.form
@@ -65,16 +70,25 @@ def search_activities():
         # Fetch city data
         data_city = get_data_for_city(city)
 
+        # If only city is provided as a filter, return all activities for that city
+        if not (price or rating or wheelchair or hearing or visual):
+            return render_template('search.html', results=data_city)
+
         # Apply filters
         search = Filter(data_city=data_city, city=city)
-        results = search.filter_by_price(price)
-        results = search.filter_by_rating(rating)
+        if price:
+            search.filter_by_price(price)
+        if rating:
+            search.filter_by_rating(rating)
         if wheelchair:
-            results = search.filter_by_wheelchair_accessible_entrance()
+            search.filter_by_wheelchair_accessible_entrance()
         if hearing:
-            results = search.filter_by_hearing_accessibility()
+            search.filter_by_hearing_accessibility()
         if visual:
-            results = search.filter_by_visual_accessibility()
+            search.filter_by_visual_accessibility()
+
+        # Fetch the final filtered results after applying all filters
+        results = search.filtered_results
 
         return render_template('search.html', results=results)
     return render_template('search.html')
@@ -83,7 +97,7 @@ def search_activities():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('flask_login'))
+    return render_template("index.html")
 
 
 if __name__ == '__main__':

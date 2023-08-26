@@ -12,17 +12,30 @@
     <label for="citySelect">Choose a city:</label>
     <select name="city" id="citySelect" required>
         <option value="New York">New York</option>
-        <option value="Los Angeles">Los Angeles</option>
-        <!-- Add other cities as needed -->
+        <option value="Madrid">Madrid</option>
+        <option value="Paris">Paris</option>
     </select>
     <br><br>
 
-    <label for="priceInput">Maximum Price:</label>
-    <input type="number" name="price" id="priceInput" min="0">
+    <label for="priceInput">Choose a price:</label>
+    <select name="price" id="priceInput">
+        <option value="" selected>Select a price</option>
+        <option value="free">free</option>
+        <option value="cheap">cheap</option>
+        <option value="medium">medium</option>
+        <option value="expensive">expensive</option>
+    </select>
     <br><br>
 
-    <label for="ratingInput">Minimum Rating:</label>
-    <input type="number" name="rating" id="ratingInput" min="0" max="5" step="0.1">
+    <label for="ratingInput">Choose a rating:</label>
+    <select name="rating" id="ratingInput">
+        <option value="" selected>Select a rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
     <br><br>
 
     <label for="wheelchairCheckbox">Wheelchair Accessible:</label>
@@ -49,6 +62,6 @@
         {% endfor %}
     </ul>
     {% endif %}
-    <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+    <p><a href="{{ url_for('menu') }}">Back to Menu</a></p>
 </body>
 </html>
