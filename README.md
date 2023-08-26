@@ -11,6 +11,8 @@ Here's a basic overview of the main directories and files in this project:
         - `/register`: Code specifically for user registration.
     - `/activities`: Code related to activities.
         - `/search`: Code specifically for searching activities.
+    - `/scripts`: Scripts.
+        - `/main`: Code specifically for the running of the program.
     - `/admin`: Code related to the admin user section.
       - - `/admin`: Code specifically for admin specific functions
     - `/tests`: Unit tests for your code. Note for us: Test folder should mimic the structure that it is testing

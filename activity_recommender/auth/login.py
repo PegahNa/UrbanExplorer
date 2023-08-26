@@ -96,7 +96,7 @@ class User:
         return "You have successfully been logged out"
 
 
-class AdminUser(User):
-    # will inherit all things from user class
-    # need to return to this once we have created the admin section to see if more is needed
-    pass
+# class AdminUser(User):
+#     # will inherit all things from user class
+#     # need to return to this once we have created the admin section to see if more is needed
+#     pass

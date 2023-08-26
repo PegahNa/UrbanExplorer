@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Activities</title>
+</head>
+<body>
+    <h1>Search Activities</h1>
+<form action="{{ url_for('search_activities') }}" method="post">
+    <label for="citySelect">Choose a city:</label>
+    <select name="city" id="citySelect" required>
+        <option value="New York">New York</option>
+        <option value="Madrid">Madrid</option>
+        <option value="Paris">Paris</option>
+    </select>
+    <br><br>
+
+    <label for="priceInput">Choose a price:</label>
+    <select name="price" id="priceInput">
+        <option value="" selected>Select a price</option>
+        <option value="free">free</option>
+        <option value="cheap">cheap</option>
+        <option value="medium">medium</option>
+        <option value="expensive">expensive</option>
+    </select>
+    <br><br>
+
+    <label for="ratingInput">Choose a rating:</label>
+    <select name="rating" id="ratingInput">
+        <option value="" selected>Select a rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <br><br>
+
+    <label for="wheelchairCheckbox">Wheelchair Accessible:</label>
+    <input type="checkbox" name="wheelchair" id="wheelchairCheckbox">
+    <br><br>
+
+    <label for="hearingCheckbox">Hearing Accessible:</label>
+    <input type="checkbox" name="hearing" id="hearingCheckbox">
+    <br><br>
+
+    <label for="visualCheckbox">Visual Accessible:</label>
+    <input type="checkbox" name="visual" id="visualCheckbox">
+    <br><br>
+
+    <input type="submit" value="Search">
+</form>
+
+    <br>
+    {% if results %}
+    <h2>Search Results:</h2>
+    <ul>
+        {% for activity in results %}
+        <li>{{ activity.activity }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <p><a href="{{ url_for('menu') }}">Back to Menu</a></p>
+</body>
+</html>
