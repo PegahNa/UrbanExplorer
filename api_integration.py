@@ -22,7 +22,6 @@ def get_location_info(query):
             return formatted_address
     return "Location not found"
 
-
 def main():
     user_input = input("Enter a destination: ")
     location = get_location_info(user_input)
