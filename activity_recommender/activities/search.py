@@ -117,6 +117,7 @@ class Filter:
         number_of_options = list(range(1, len(self.filtered_results) + 1))
         if selected_activity in number_of_options:
             activity = self.filtered_results[selected_activity-1]
+            activity_selected = activity['activity']
             print(f"Name: {activity['activity']}")
             print(f"Price: {euro_or_dollars(self.city)}{activity['price']}")
             print(f"Rating: {activity['rating']} stars")
@@ -129,6 +130,7 @@ class Filter:
                 print("Opening hours:")
                 for time in activity['opening_hours']['specific_times']:
                     print(f"    {time['day']} from {time['open']} to {time['close']}")
+            return activity_selected
         else:
             print(f"Invalid input. It can only be {', '.join(map(str, number_of_options))}")
             self.show_activity_details(self.filtered_results)

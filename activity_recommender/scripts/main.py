@@ -6,6 +6,7 @@ from activity_recommender.activities.search import Filter
 # adding login import
 from activity_recommender.auth.login import UserManager, User, ExistingUserError
 from activity_recommender.utils.main_utils import print_filters_used, get_filter_from_numbers
+from activity_recommender.API.api_integration import main
 
 #  We need to do error handling for every function and a back function for each menu
 
@@ -242,7 +243,8 @@ class ActivityRecommender:
             self.choose_more_than_one_filter()
         else:
             while True:
-                self.filter_obj.show_activity_details()
+                name_of_activity = self.filter_obj.show_activity_details()
+                print(name_of_activity)
                 filter_chosen = print_filters_used(self.filters_applied)
 
                 print("\n Menu")
@@ -258,7 +260,7 @@ class ActivityRecommender:
 
                 if map_or_list == "1":
                     # function to show map
-                    print("map")
+                    print(main(name_of_activity))
                     exit()
                 elif map_or_list == "2":
                     continue
