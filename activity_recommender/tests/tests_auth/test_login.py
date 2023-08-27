@@ -5,8 +5,8 @@ from unittest import TestCase
 from activity_recommender.auth.login import UserManager, User, ExistingUserError, UserValidationError, LoginError
 from activity_recommender.utils.login_utils import verify_password, hash_password
 
-class TestAuthentication(TestCase):  # TODO check if I can do one class for both so it's one setup for both
 
+class TestAuthentication(TestCase):
     original_users_data = None
     dummy_data = None
     @classmethod
