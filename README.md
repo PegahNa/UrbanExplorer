@@ -37,13 +37,16 @@ Here's a basic overview of the main directories and files in this project:
     - `/locations`: JSON files for storing locations.
     - `/users`: JSON files for storing usernames and passwords.
 - `README.md`: This file!
-- `.gitignore`: .idea/ & __pycache__/
+- `.gitignore`: .idea/ & pycache/
 
 ## Getting Started
 
 ### Prerequisites
 Python 3.x  
 pip (Python package manager)
+requests
+bcrypt
+
 
 ### Installation
 1. Clone this repository:  
