@@ -24,7 +24,8 @@ class ActivityRecommender:
         self.filtered_results = []
 
     # Import activity data of Madrid, Paris and New York that will be filtered
-    def load_locations_data(self):
+    @staticmethod
+    def load_locations_data():
         location_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "locations.json")
         with open(location_file) as json_file:
             data = json.load(json_file)
@@ -43,7 +44,7 @@ class ActivityRecommender:
             print(f"Custom Exception Caught: {e}")
 
         # making sure the user logs in or registers before seeing the rest of the options
-        choice = input("Welcome, please choose an option:\n1. Login\n2. Register\n3. Exit\n")
+        choice = input("Welcome to UrbanExplorer! Please, choose an option:\n1. Login\n2. Register\n3. Exit\n")
         # handling user's choice for login
         if choice == "1":
             username = input("Enter username: ")
@@ -118,6 +119,9 @@ class ActivityRecommender:
 
     # Menu to choose filters to apply to data. It can be multiple filters at the same time
     def filter_activities(self):
+        # Erase history of previous filters chosen and filter activities according to new filters
+        self.filters_applied.clear()
+        self.filtered_results.clear()
         print("Filters menu")
         print("1. Filter by Price")
         print("2. Filter by Rating")
@@ -281,8 +285,8 @@ class ActivityRecommender:
                             continue
                         elif map_or_list == "3":
                             # Erase history of previous filters chosen and filter activities according to new filters
-                            self.filters_applied.clear()
-                            self.filtered_results.clear()
+                            # self.filters_applied.clear()
+                            # self.filtered_results.clear()
                             self.filter_obj = Filter(self.locations_data[self.city], self.city)
                             self.filter_activities()
                         else:
