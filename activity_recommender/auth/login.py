@@ -1,6 +1,5 @@
 import json
 import os
-# import bcrypt # TODO test running with this commented out
 from activity_recommender.utils.login_utils import hash_password, verify_password
 
 
@@ -14,6 +13,10 @@ class UserValidationError(UserManagerError):
 
 
 class ExistingUserError(UserManagerError):
+    pass
+
+
+class LoginError(UserManagerError):
     pass
 
 
@@ -52,8 +55,7 @@ class UserManager:
             raise UserManagerError(f"Error writing to {cls.user_file} user cannot be saved and will not be able to log"
                                    f"in next time.")
 
-    # add new user to user dict
-
+    # add new user to user dict that stores user credentials
     @classmethod
     def add_user(cls, user):
         # adding functionality to hash user password
@@ -64,7 +66,7 @@ class UserManager:
         if user.username in cls.users:
             raise ExistingUserError("Username already exists.")
         cls.users[user.username] = user
-        cls.save_users()  # TODO would it be better to do this add_user without calling save_user
+        cls.save_users()
         return True
 
     # get users stored in the dict that have been retrieved from the file
@@ -73,30 +75,22 @@ class UserManager:
         return cls.users.get(username, None)  # none being the value returned if the username doesn't exist
 
 
+# initialise class for user actions
 class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
 
+# method for user login, checks if a users username and exists, returns True, if not raises errors(handled in main)
     def login(self):
         existing_user = UserManager.get_user(self.username)
-        # added the functionality to check the hashed password
-        if existing_user and verify_password(self.password, existing_user.password):
-            return True  # added this as boolean values, so it's easier for you to use in main.py @Pegah
-        else:
-            return False
+        if not existing_user:
+            raise LoginError("Username not found")
+        if not verify_password(self.password, existing_user.password):
+            raise LoginError("Password not found")
+        return True
 
-    def change_password(self, new_password):
-        # updated function to add hashing functionality
-        self.password = hash_password(new_password)
-        return "Password has successfully been updated"
-
+# static method to imitate logging out
     @staticmethod
     def logout():
         return "You have successfully been logged out"
-
-
-# class AdminUser(User):
-#     # will inherit all things from user class
-#     # need to return to this once we have created the admin section to see if more is needed
-#     pass
