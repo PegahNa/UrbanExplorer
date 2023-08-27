@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity Recommender</title>
 </head>
 <body>
+    <div class="container">
     <h1>Welcome to Activity Recommender</h1>
     <p>
         <a href="{{ url_for('flask_login') }}">Login</a> |
@@ -15,5 +17,33 @@
 <!--        <! &#45;&#45; <a href="{{ url_for('search_activities') }}">Search Activities</a> &ndash;&gt;-->
 <!--        <a href="{{ url_for('logout') }}">Logout</a>-->
     </p>
+    </div>
+
+<div class="building-container">
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+        <div class="window" style="bottom: 10px; left: 10px;"></div>
+        <div class="window" style="bottom: 10px; right: 10px;"></div>
+    </div>
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+        <div class="window" style="bottom: 10px; left: 10px;"></div>
+        <div class="window" style="bottom: 10px; right: 10px;"></div>
+    </div>
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+        <div class="window" style="bottom: 10px; left: 10px;"></div>
+        <div class="window" style="bottom: 10px; right: 10px;"></div>
+    </div>
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+    </div>
+</div>
+
 </body>
 </html>
+

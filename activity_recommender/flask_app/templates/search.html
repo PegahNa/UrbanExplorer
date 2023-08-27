@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,5 +64,31 @@
     </ul>
     {% endif %}
     <p><a href="{{ url_for('menu') }}">Back to Menu</a></p>
+
+<div class="building-container">
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+        <div class="window" style="bottom: 10px; left: 10px;"></div>
+        <div class="window" style="bottom: 10px; right: 10px;"></div>
+    </div>
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+        <div class="window" style="bottom: 10px; left: 10px;"></div>
+        <div class="window" style="bottom: 10px; right: 10px;"></div>
+    </div>
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+        <div class="window" style="bottom: 10px; left: 10px;"></div>
+        <div class="window" style="bottom: 10px; right: 10px;"></div>
+    </div>
+    <div class="building">
+        <div class="window" style="top: 10px; left: 10px;"></div>
+        <div class="window" style="top: 10px; right: 10px;"></div>
+    </div>
+</div>
+
 </body>
 </html>
