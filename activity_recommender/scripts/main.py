@@ -6,6 +6,7 @@ from activity_recommender.auth.login import UserManager, User, ExistingUserError
 from activity_recommender.utils.main_utils import print_filters_used, get_filter_from_numbers
 from activity_recommender.API.api_integration import get_url
 
+
 #  We need to do error handling for every function and a back function for each menu
 class UserRetrievalError(Exception):
     pass
@@ -50,25 +51,28 @@ class ActivityRecommender:
             password = input("Enter password: ")
             # creating an instance of user
             user = User(username, password)
-            if user.login():
-                print("Login successful\n")
-                while True:
-                    choice = input("\n----MENU----\n1. Search Activities\n2. Logout\n")
-                    if choice == "1":
-                        self.choose_activity()
-                    elif choice == "2":
-                        print(user.logout())
-                        exit()
-                    else:
-                        print("Invalid choice, please choose from option 1 or 2: ")
-                        continue
-            else:
-                print("Incorrect username or password")
+            try:
+                if user.login():
+                    print("Login successful\n")
+                    while True:
+                        choice = input("\n----MENU----\n1. Search Activities\n2. Logout\n")
+                        if choice == "1":
+                            self.choose_activity()
+                        elif choice == "2":
+                            print(user.logout())
+                            exit()
+                        else:
+                            print("Invalid choice, please choose from option 1 or 2: ")
+                            continue
+                else:
+                    raise UserLoginError
+            except UserLoginError:
+                print("Incorrect username or password, please try again or register again")
                 self.main_menu()
 
         # handling a users choice for registration
         elif choice == "2":
-            username = input("Enter a username:")
+            username = input("Enter a username: ")
             password = input("Enter a password: ")
             # creating an instance of the user
             new_user = User(username, password)
