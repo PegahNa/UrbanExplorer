@@ -12,6 +12,30 @@ ReturnToMenu -->|Return to Main Menu| EnterCommands
 ExitProgram --> End[End]
 
 ```
+```mermaid
+flowchart TD;
+
+group-1-activity-recommender -->|activity_recommender| activity_recommender
+group-1-activity-recommender -->|data| data
+activity_recommender -->|activities| activities
+activity_recommender -->|API| API
+activity_recommender -->|auth| auth
+activity_recommender -->|flask| flask
+activity_recommender -->|scripts| scripts
+activity_recommender -->|tests| tests
+data -->|locations.json| locations.json
+data -->|user.json| user.json
+activities -->|search| search
+API -->|api_integration| api_integration
+auth -->|login| login
+flask -->|flask_app| flask_app
+scripts -->|main| main
+tests -->|test_activities| test_activities
+tests -->|test_API| test_API
+tests -->|tests_auth| tests_auth
+tests -->|tests_main| tests_main
+
+```
 
 # UrbanExplorer
 UrbanExplorer is a Python program that assists users in finding and filtering activities in various cities.  
