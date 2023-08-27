@@ -2,6 +2,45 @@
 UrbanExplorer is a Python program that assists users in finding and filtering activities in various cities.  
 The program allows users to search for activities based on different parameters such as price, rating, accessibility, and opening hours.
 
+```mermaid
+flowchart TD;
+
+Start[Start] --> EnterCommands{Enter commands}
+
+EnterCommands -->|Choose City| ChooseCity(Choose City)
+EnterCommands -->|Exit| ExitProgram(Exit)
+
+ChooseCity -->|Choose Filter| ChooseFilter(Choose Filter)
+ChooseFilter -->|Display Results| DisplayResults(Display Results)
+DisplayResults -->|Show on Map| ShowOnMap(Show on Map)
+ShowOnMap --> ReturnToMenu(Return to Menu)
+ShowOnMap --> ExitProgram(Exit)
+
+ReturnToMenu -->|Return to Main Menu| EnterCommands
+ExitProgram --> End[End]
+
+subgraph group-1-activity-recommender
+  activity_recommender -->|activities| activities
+  activity_recommender -->|API| API
+  activity_recommender -->|auth| auth
+  activity_recommender -->|flask| flask
+  activity_recommender -->|scripts| scripts
+  activity_recommender -->|tests| tests
+  data -->|locations.json| locations.json
+  data -->|user.json| user.json
+  activities -->|search| search
+  API -->|api_integration| api_integration
+  auth -->|login| login
+  flask -->|flask_app| flask_app
+  scripts -->|main| main
+  tests -->|test_activities| test_activities
+  tests -->|test_API| test_API
+  tests -->|tests_auth| tests_auth
+  tests -->|tests_main| tests_main
+  
+```
+
+
 ## File Structure
 
 Here's a basic overview of the main directories and files in this project:
