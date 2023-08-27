@@ -6,6 +6,14 @@ from activity_recommender.auth.login import UserManager, User, ExistingUserError
 from activity_recommender.utils.main_utils import print_filters_used, get_filter_from_numbers
 from activity_recommender.API.api_integration import get_url
 
+#  We need to do error handling for every function and a back function for each menu
+class UserRetrievalError(Exception):
+    pass
+
+
+class UserLoginError(Exception):
+    pass
+
 
 class ActivityRecommender:
     def __init__(self):
@@ -27,29 +35,33 @@ class ActivityRecommender:
 
         # initialising the user manage for managing users
         user_manager = UserManager()
-        # retrieving any existing users from the file
-        user_manager.retrieve_users()
+
+        # try retrieving any existing users from the file, raise an error if the users weren't retrieved
+        try:
+            user_manager.retrieve_users()
+        except UserRetrievalError as e:
+            print(f"Custom Exception Caught: {e}")
 
         # making sure the user logs in or registers before seeing the rest of the options
         choice = input("Welcome, please choose an option:\n1. Login\n2. Register\n3. Exit\n")
         # handling user's choice for login
         if choice == "1":
-            username = input("Enter username: ")  # TODO: LIVVY TO CHECK
+            username = input("Enter username: ")
             password = input("Enter password: ")
             # creating an instance of user
             user = User(username, password)
             if user.login():
                 print("Login successful\n")
-                # TODO: Add the menu and options to search
-                choice = input("\n----MENU----\n1. Search Activities\n2. Logout\n") #TODO can we use choice for var name
-                if choice == "1":
-                    self.choose_activity()
-                elif choice == "2":
-                    print(user.logout())
-                    exit()
-                else:
-                    print("Invalid choice!")
-                    self.main_menu()  # TODO: This needs to be updated to not go the first main menu
+                while True:
+                    choice = input("\n----MENU----\n1. Search Activities\n2. Logout\n")
+                    if choice == "1":
+                        self.choose_activity()
+                    elif choice == "2":
+                        print(user.logout())
+                        exit()
+                    else:
+                        print("Invalid choice, please choose from option 1 or 2: ")
+                        continue
             else:
                 print("Incorrect username or password")
                 self.main_menu()
@@ -57,7 +69,7 @@ class ActivityRecommender:
         # handling a users choice for registration
         elif choice == "2":
             username = input("Enter a username:")
-            password = input("Enter a password: ")  # TODO: probably worth asking password twice?
+            password = input("Enter a password: ")
             # creating an instance of the user
             new_user = User(username, password)
             # add error handling to handle if the user does exist when the user registers
