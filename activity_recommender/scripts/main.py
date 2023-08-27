@@ -2,12 +2,11 @@ import json
 from datetime import datetime
 import os
 from activity_recommender.activities.search import Filter
-from activity_recommender.auth.login import UserManager, User, ExistingUserError
+from activity_recommender.auth.login import UserManager, User, ExistingUserError, LoginError
 from activity_recommender.utils.main_utils import print_filters_used, get_filter_from_numbers
 from activity_recommender.API.api_integration import get_url
 
 
-#  We need to do error handling for every function and a back function for each menu
 class UserRetrievalError(Exception):
     pass
 
@@ -65,9 +64,9 @@ class ActivityRecommender:
                             print("Invalid choice, please choose from option 1 or 2: ")
                             continue
                 else:
-                    raise UserLoginError
-            except UserLoginError:
-                print("Incorrect username or password, please try again or register again")
+                    raise LoginError
+            except LoginError as e:
+                print(f"Error: {e}")
                 self.main_menu()
 
         # handling a users choice for registration
