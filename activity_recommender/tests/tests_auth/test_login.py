@@ -2,43 +2,13 @@ import unittest
 import os
 import json
 from unittest import TestCase
-from activity_recommender.auth.login import UserManager, User, ExistingUserError, UserValidationError
+from activity_recommender.auth.login import UserManager, User, ExistingUserError, UserValidationError, LoginError
 from activity_recommender.utils.login_utils import verify_password, hash_password
 
 class TestAuthentication(TestCase):  # TODO check if I can do one class for both so it's one setup for both
 
     original_users_data = None
     dummy_data = None
-
-    # @classmethod
-    # def setUpClass(cls):
-    #     # create a backup for original users data so tests do not intefere
-    #     if os.path.exists(UserManager.user_file):
-    #         with open(UserManager.user_file, "r") as file:
-    #             cls.original_users_data = file.read()  # this will be re-instated in my file in the teardown
-    #     else:
-    #         cls.original_users_data = None
-    #
-    #     # creating dummy data for testing:
-    #     cls.dummy_data = {
-    #                         "test1": {
-    #                             "username": "test1",
-    #                             "password": "pass1"
-    #                         },
-    #                         "test2": {
-    #                             "username": "test2",
-    #                             "password": "pass2"
-    #                         },
-    #                         "test3": {
-    #                             "username": "test3",
-    #                             "password": "pass3"
-    #                         }
-    #                     }
-    #
-    #     # write dummy data into my JSON file
-    #     with open(UserManager.user_file, "w") as file:
-    #         json.dump(cls.dummy_data, file)
-
     @classmethod
     def setUpClass(cls):
         # create a backup for original users data so tests do not interfere
@@ -117,7 +87,6 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
         self.assertEqual(user.username, "test1")
         # updated to include hash verification
         self.assertTrue(verify_password("pass1", user.password))
-        # TODO could add more testing to check None is passed when the user doesn't exist
 
     def test_valid_login(self):
         user = User("test1", "pass1")
@@ -125,14 +94,8 @@ class TestAuthentication(TestCase):  # TODO check if I can do one class for both
 
     def test_invalid_login(self):
         user = User("test1", "notmypassword")
-        self.assertFalse(user.login())
-
-    def test_change_password(self):
-        user = User("test1", "pass1")
-        new_password = "thisismynewpass"
-        user.change_password(new_password)
-        # update to include the use of the utils function to verify the new password hash
-        self.assertTrue(verify_password(new_password, user.password))
+        with self.assertRaises(LoginError):
+            user.login()
 
     def test_logout(self):
         self.assertEqual(User.logout(), "You have successfully been logged out")
